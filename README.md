@@ -13,5 +13,11 @@ Methods:
 - Constant Mortality
 - Constant escapement
 
-- RL solutions
 
+## RL training:
+
+requires `rl4eco` package. Simply run `scripts/train.py` pointing at the chosen configuration. The trained model is automatically pushed to Huggingface (requires a HF token).
+
+```bash
+python scripts/train.py -f hyperpars/ppo-asm2o-v0-1.yml
+```

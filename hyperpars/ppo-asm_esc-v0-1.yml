@@ -1,0 +1,11 @@
+# stable-baselines3 configuration
+
+algo: "PPO"
+env_id: "AsmEsc-v0"
+n_envs: 12
+tensorboard: "/home/jovyan/logs"
+total_timesteps: 6000000
+config: {}
+use_sde: True
+id: "1"
+repo: "cboettig/rl-ecology"

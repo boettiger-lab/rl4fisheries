@@ -1,0 +1,30 @@
+asm:
+    env: rl4fisheries.asm.Asm
+    run: PPO
+    stop:
+        time_total_s: 24000
+    config:
+        lambda: 0.95
+        kl_coeff: 0.5
+        clip_param: 0.2
+        vf_clip_param: 400.0
+        entropy_coeff: 0.0001
+        rollout_fragment_length: auto
+        num_sgd_iter: 10
+        num_envs_per_worker: 24
+        min_time_s_per_iteration: 360
+        lr: 0.0003
+
+        # Run with Learner- and RLModule API (new stack).
+        _enable_learner_api: true
+        _enable_rl_module_api: true
+        # Use N Learner worker on the GPU
+        num_learner_workers: 2
+        num_gpus_per_learner_worker: 1
+        num_gpus: 0  # No GPU needed for driver.
+        # Since we are using learner workers, the driver process does not need
+        # a CPU in particular.
+        num_cpus_for_local_worker: 1
+        # Need to unset this b/c we are using the RLModule API, which
+        # provides exploration control via the RLModule's `forward_exploration` method.
+        exploration_config: {}

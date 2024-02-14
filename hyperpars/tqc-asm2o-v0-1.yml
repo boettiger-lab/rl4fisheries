@@ -1,0 +1,13 @@
+# stable-baselines3 configuration
+
+algo: "TQC"
+env_id: "Asm2o-v0"
+n_envs: 6
+tensorboard: "/home/jovyan/logs"
+total_timesteps: 12000000
+config: {"learning_rate": 0.0001,
+         "learning_starts": 1000,
+        }
+use_sde: True
+id: "1"
+repo: "cboettig/rl-ecology"
