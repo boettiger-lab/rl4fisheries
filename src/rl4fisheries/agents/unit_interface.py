@@ -35,7 +35,7 @@ class unitInterface:
 
     def to_norm_units(self, vec: np.ndarray):
         """ [0, bounds] to [-1, 1] space. """
-        assert isinstance(vec, np.ndarray), "unitInterface.to_norm_units() `vec` argument must be an np.ndarray!"
+#        assert isinstance(vec, np.ndarray), "unitInterface.to_norm_units() `vec` argument must be an np.ndarray!"
         return vec / self.bound_used
         self.bound_used * (vec + 1 ) / 2
 

@@ -2,6 +2,16 @@ import json
 import os
 import numpy as np
 
+class fixed_effort:
+    def __init__(self, effort):
+        self.effort = effort[0]
+
+    def predict(self, observation, **kwargs):
+        action = self.effort * 2 - 1
+        action = np.array([action], dtype=np.float32)
+        return action, {}
+
+
 class Msy:
     def __init__(self, mortality: float =0, threshold: float =0, env = None, **kwargs):
         self.mortality = mortality
@@ -11,7 +21,7 @@ class Msy:
 
     def predict(self, state):
         pop = self.state_to_pop(state)
-        raw_prediction = raw_prediction = np.clip( self.predict_raw(pop), 0, 1)
+        raw_prediction = np.clip( self.predict_raw(pop), 0, 1)
         return np.float32([2 * raw_prediction - 1])
     
     def predict_raw(self, pop):
