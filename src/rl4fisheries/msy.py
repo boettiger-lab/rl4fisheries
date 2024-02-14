@@ -1,6 +1,8 @@
 import json
 import os
 import numpy as np
+import polars as pl
+from tqdm import tqdm
 
 class Msy:
     def __init__(self, mortality: float =0, threshold: float =0, env = None, **kwargs):
@@ -34,6 +36,22 @@ class Msy:
 
     def state_to_pop(self, state):
         return (state + 1 ) / 2
+
+    @classmethod
+    def generate_tuning_stats(self, env, N=500, n_morts=100, max_mort=0.25):
+        #
+        from .evaluation import gather_stats
+        #
+        pbar = tqdm(np.linspace(0,  max_effort, n_efforts))
+        pbar.set_descriptioon("Msy().generate_tuning_stats()")
+        #
+        return pl.from_records(
+            [
+                [m, *gather_stats(Msy(m), env=env)] for m in pbar
+            ],
+            schema=["mortality", "avg_rew", "low_rew", "hi_rew"]
+        )
+        
     
     @classmethod
     def load(self, path):
