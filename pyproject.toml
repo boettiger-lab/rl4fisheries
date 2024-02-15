@@ -5,7 +5,10 @@ version = "1.0.0"
 dependencies = ["gymnasium",
                 "numpy",
                 "matplotlib",
-                "typing"]
+                "typing",
+                "polars",
+                "tqdm",
+                "itertools"]
 
 [project.optional-dependencies]
 tests = ["pytest", "pytest-cov", "stable_baselines3"]
