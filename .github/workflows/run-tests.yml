@@ -37,9 +37,8 @@ jobs:
       - name: Run tests with pytest & nox
         run: |
           nox -s test-${{ matrix.python-version }}
-      # You only need to upload code coverage once to codecov unless you have a
-      # more complex build that you need coverage for.
-      - name: Upload coverage to Codecov
-        if: ${{ matrix.os == 'ubuntu-latest' &&  matrix.python-version == '3.10'}}
-        uses: codecov/codecov-action@v3
+#  Codecov is only free for open source / public repos. Not really needed anyway   
+#      - name: Upload coverage to Codecov
+#        if: ${{ matrix.os == 'ubuntu-latest' &&  matrix.python-version == '3.10'}}
+#        uses: codecov/codecov-action@v3
 
