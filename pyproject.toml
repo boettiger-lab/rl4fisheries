@@ -7,8 +7,7 @@ dependencies = ["gymnasium",
                 "matplotlib",
                 "typing",
                 "polars",
-                "tqdm",
-                "itertools"]
+                "tqdm"]
 
 [project.optional-dependencies]
 tests = ["pytest", "pytest-cov", "stable_baselines3"]

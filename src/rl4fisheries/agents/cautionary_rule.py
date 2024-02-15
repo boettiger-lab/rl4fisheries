@@ -66,7 +66,7 @@ class CautionaryRule:
             x2 = np.cos(theta) * radius
             # sin / cos are chosen so that x1 < x2
             manager = CautionaryRule(x1=x1, x2=x2, y2=y2)
-            results.append([x1, x2, *gather_stats(
+            results.append([x1, x2, y2, *gather_stats(
                 CautionaryRule(
                     x1=np.sin(theta) * radius, 
                     x2=np.cos(theta) * radius, 
