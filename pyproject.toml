@@ -8,4 +8,4 @@ dependencies = ["gymnasium",
                 "typing"]
 
 [project.optional-dependencies]
-tests = ["pytest", "pytest-cov"]
+tests = ["pytest", "pytest-cov", "stable_baselines3"]
