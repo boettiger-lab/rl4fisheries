@@ -42,8 +42,7 @@ class Msy:
         #
         from .evaluation import gather_stats
         #
-        pbar = tqdm(np.linspace(0,  max_effort, n_efforts))
-        pbar.set_descriptioon("Msy().generate_tuning_stats()")
+        pbar = tqdm(np.linspace(0,  max_mort, n_morts), desc="Msy.generate_tuning_stats()")
         #
         return pl.from_records(
             [
