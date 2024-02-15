@@ -48,7 +48,7 @@ class CautionaryRule:
     @classmethod
     def generate_tuning_stats(self, env, opt_msy, N=500, n_per_rad=40, n_rad=40, max_rad_frac=0.15, min_rad_frac=0.001):
         #
-        from .evaluation import gather_stats
+        from rl4fisheries.evaluation import gather_stats
         #
         pbar = tqdm(
             product(

@@ -43,7 +43,7 @@ class ConstEsc:
     @classmethod
     def generate_tuning_stats(self, env, N=500, n_escs=100, max_esc=0.25):
         #
-        from .evaluation import gather_stats
+        from rl4fisheries.evaluation import gather_stats
         #
         pbar = tqdm(np.linspace(0,  max_esc, n_escs), desc="ConstEsc.generate_tuning_stats()")
         #

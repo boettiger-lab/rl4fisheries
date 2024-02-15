@@ -40,7 +40,7 @@ class Msy:
     @classmethod
     def generate_tuning_stats(self, env, N=500, n_morts=100, max_mort=0.25):
         #
-        from .evaluation import gather_stats
+        from rl4fisheries.evaluation import gather_stats
         #
         pbar = tqdm(np.linspace(0,  max_mort, n_morts), desc="Msy.generate_tuning_stats()")
         #
