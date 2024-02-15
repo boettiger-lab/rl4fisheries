@@ -6,3 +6,6 @@ dependencies = ["gymnasium",
                 "numpy",
                 "matplotlib",
                 "typing"]
+
+[project.optional-dependencies]
+tests = ["pytest", "pytest-cov", "stable_baselines3"]
