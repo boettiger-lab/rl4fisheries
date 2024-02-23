@@ -1,14 +1,15 @@
 import json
 import os
 import numpy as np
-
+import polars as pl
+from tqdm import tqdm
 
 class ConstEsc:
-    def __init__(self, escapement=0, obs_bounds = 1, **kwargs):
+    def __init__(self, escapement=0, bounds = 1, **kwargs):
         from .unit_interface import unitInterface
-        self.ui = unitInterface(bounds=obs_bounds)
+        self.ui = unitInterface(bounds=bounds)
         self.escapement = escapement
-        self.obs_bound = obs_bounds
+        self.bounds = bounds
         self.policy_type = "constant_escapement"
 
 
@@ -37,6 +38,21 @@ class ConstEsc:
 
     def state_to_pop(self, state):
         return (state + 1 ) / 2
+
+    
+    @classmethod
+    def generate_tuning_stats(self, env, N=500, n_escs=100, max_esc=0.25):
+        #
+        from rl4fisheries.evaluation import gather_stats
+        #
+        pbar = tqdm(np.linspace(0,  max_esc, n_escs), desc="ConstEsc.generate_tuning_stats()")
+        #
+        return pl.from_records(
+            [
+                [m, *gather_stats(ConstEsc(m), env=env)] for m in pbar
+            ],
+            schema=["escapement", "avg_rew", "low_rew", "hi_rew"]
+        )
     
     @classmethod
     def load(self, path):
