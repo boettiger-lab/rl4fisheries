@@ -27,43 +27,9 @@ class ConstEsc:
 
     def predict_effort(self, state):
         return (self.predict(state) + 1) / 2
-    
-    def save(self, path = None)->None:       
-        path = path or os.path.join(f'{self.policy_type}.json')
-        with open(path, 'w') as f:
-            json.dump(
-                self.__dict__, 
-                f,
-            )
 
     def state_to_pop(self, state):
         return (state + 1 ) / 2
 
-    
-    @classmethod
-    def generate_tuning_stats(self, env, N=500, n_escs=100, max_esc=0.25):
-        #
-        from rl4fisheries.evaluation import gather_stats
-        #
-        pbar = tqdm(np.linspace(0,  max_esc, n_escs), desc="ConstEsc.generate_tuning_stats()")
-        #
-        return pl.from_records(
-            [
-                [m, *gather_stats(ConstEsc(m), env=env)] for m in pbar
-            ],
-            schema=["escapement", "avg_rew", "low_rew", "hi_rew"]
-        )
-    
-    @classmethod
-    def load(self, path):
-        assert path[-5:] == '.json', f"load error: msy.load(path) can only load json files currently!"
 
-        with open(path, "r") as f:
-            data = json.load(f)
-            assert isinstance(data, dict), f"Target file is of type {type(data)}, it should be dict."
-
-        # self.mortality = data.get("mortality")
-
-        return ConstEsc(**data)
-        
         
