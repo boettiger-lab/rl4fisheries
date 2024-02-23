@@ -10,4 +10,5 @@ dependencies = ["gymnasium",
                 "tqdm"]
 
 [project.optional-dependencies]
-tests = ["pytest", "pytest-cov", "stable_baselines3"]
+tests = ["pytest", "pytest-cov", "stable_baselines3",  "sb3-contrib", "ray"]
+docs = ["ibis-framework", "stable_baselines3", "sb3-contrib", "plotnine", "huggingface_hub"]

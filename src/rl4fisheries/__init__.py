@@ -7,5 +7,3 @@ from rl4fisheries.agents.cautionary_rule import CautionaryRule
 from rl4fisheries.agents.const_esc import ConstEsc
 from rl4fisheries.agents.msy import Msy
 
-from rl4fisheries.utils.evaluation import gen_ep_rew, gather_stats
-from rl4fisheries.utils.sb3 import load_sb3_agent
