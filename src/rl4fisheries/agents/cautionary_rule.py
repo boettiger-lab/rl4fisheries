@@ -17,10 +17,10 @@ class CautionaryRule:
 
         assert x1 <= x2, "CautionaryRule error: x1 <= x2" 
 
-    def predict(self, state):
-        pop = self.ui.to_natural_units(state)
+    def predict(self, observation, **kwargs):
+        pop = self.ui.to_natural_units(observation)
         raw_prediction = np.clip( self.predict_raw(pop), 0, 1)
-        return np.float32([2 * raw_prediction - 1])
+        return np.float32([2 * raw_prediction - 1]), {}
     
     def predict_raw(self, pop):
         population = pop[0]

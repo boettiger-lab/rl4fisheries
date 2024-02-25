@@ -11,10 +11,10 @@ class Msy:
         self.policy_type = "msy_and_threshold"
         self.env = env
 
-    def predict(self, state):
-        pop = self.state_to_pop(state)
+    def predict(self, observation, **kwargs):
+        pop = self.state_to_pop(observation)
         raw_prediction = raw_prediction = np.clip( self.predict_raw(pop), 0, 1)
-        return np.float32([2 * raw_prediction - 1])
+        return np.float32([2 * raw_prediction - 1]), {}
     
     def predict_raw(self, pop):
         population = pop[0]

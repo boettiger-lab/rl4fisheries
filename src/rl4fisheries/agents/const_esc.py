@@ -13,10 +13,10 @@ class ConstEsc:
         self.policy_type = "constant_escapement"
 
 
-    def predict(self, state):
-        pop = self.ui.to_natural_units(state)
+    def predict(self, observation, **kwargs):
+        pop = self.ui.to_natural_units(observation)
         raw_prediction = self.predict_raw(pop)
-        return 2 * raw_prediction - 1
+        return 2 * raw_prediction - 1, {}
 
     def predict_raw(self, pop):
         population = pop[0]
