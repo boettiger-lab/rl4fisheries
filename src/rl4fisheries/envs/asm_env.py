@@ -3,7 +3,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 from typing import Optional
 
-from rl4fisheries.envs.asm_funs import observe_1o, asm_pop_growth, harvest, render_asm, get_r_devs
+from rl4fisheries.envs.asm_fns import observe_1o, asm_pop_growth, harvest, render_asm, get_r_devs
 
 
 class AsmEnv(gym.Env):
