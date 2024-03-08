@@ -176,7 +176,7 @@ class AsmEnv(gym.Env):
         self.harv_vul_b = sum(self.harv_vul_pop * self.parameters["wt"])
 
     def update_ssb(self):
-        self.ssb = sum(p["mwt"] * self.state)
+        self.ssb = sum(self.parameters["mwt"] * self.state)
 
     def mortality_units(self, action):
         action = np.clip(action, [-1], [1])
