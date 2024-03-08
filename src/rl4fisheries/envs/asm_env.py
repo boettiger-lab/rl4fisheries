@@ -136,7 +136,7 @@ class AsmEnv(gym.Env):
         self.update_vuls()
         self.update_ssb()
         #
-        self.state, reward = self.population_growth()
+        self.state = self.population_growth()
         self.timestep += 1
         terminated = bool(self.timestep >= self.n_year)
         # 
