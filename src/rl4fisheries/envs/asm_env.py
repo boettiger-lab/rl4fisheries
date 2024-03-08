@@ -131,7 +131,7 @@ class AsmEnv(gym.Env):
         self.update_ssb()
         #
         mortality = self.mortality_units(action)
-        self.state, reward = self.harvest(self.state, mortality)
+        self.state, reward = self.harvest(mortality)
         #
         self.update_vuls()
         self.update_ssb()
