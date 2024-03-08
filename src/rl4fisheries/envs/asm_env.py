@@ -110,6 +110,7 @@ class AsmEnv(gym.Env):
             sdr=self.parameters["sdr"],
             rho=self.parameters["rho"],
         )
+        self.update_vuls()
         obs = self.observe()
         return obs, {}
     
