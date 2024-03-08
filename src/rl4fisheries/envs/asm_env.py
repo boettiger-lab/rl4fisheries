@@ -87,14 +87,16 @@ class AsmEnv(gym.Env):
 
         #
         # gym API
+        self.n_observs = config.get("n_observs", 1) # should match config["observation_fn"]!
+        
         self.action_space = gym.spaces.Box(
             np.array([-1], dtype=np.float32),
             np.array([1], dtype=np.float32),
             dtype=np.float32,
         )
         self.observation_space = gym.spaces.Box(
-            np.array([-1, -1], dtype=np.float32),
-            np.array([1, 1], dtype=np.float32),
+            np.array(self.n_observs * [-1], dtype=np.float32),
+            np.array(self.n_observs * [1], dtype=np.float32),
             dtype=np.float32,
         )
     
