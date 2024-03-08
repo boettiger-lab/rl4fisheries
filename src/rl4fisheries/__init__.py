@@ -2,6 +2,7 @@
 from rl4fisheries.envs.asm import Asm
 from rl4fisheries.envs.asm_2o import Asm2o
 from rl4fisheries.envs.asm_esc import AsmEsc
+from rl4fisheries.envs.asm_env import AsmEnv
 
 from rl4fisheries.agents.cautionary_rule import CautionaryRule
 from rl4fisheries.agents.const_esc import ConstEsc
@@ -15,3 +16,5 @@ register(id="Asm-v0", entry_point="rl4fisheries.envs.asm:Asm")
 register(id="AsmEsc-v0", entry_point="rl4fisheries.envs.asm_esc:AsmEsc")
 # action is harvest, but observes both total count and mean biomass
 register(id="Asm2o-v0", entry_point="rl4fisheries.envs.asm_2o:Asm2o")
+# action is harvest, but observes both total count and mean biomass
+register(id="Asm-v1", entry_point="rl4fisheries.envs.asm_env:AsmEnv")
