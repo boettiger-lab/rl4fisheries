@@ -5,6 +5,31 @@ from typing import Optional
 
 from rl4fisheries.envs.asm_fns import observe_1o, asm_pop_growth, harvest, render_asm, get_r_devs
 
+# equilibrium dist will in general depend on parameters, need a more robust way
+# to reset to random but not unrealistic starting distribution
+equib_init = [
+    0.99999999,
+    0.86000001,
+    0.73960002,
+    0.63605603,
+    0.54700819,
+    0.47042705,
+    0.40456727,
+    0.34792786,
+    0.29921796,
+    0.25732745,
+    0.22130161,
+    0.19031939,
+    0.16367468,
+    0.14076023,
+    0.1210538,
+    0.10410627,
+    0.08953139,
+    0.076997,
+    0.06621742,
+    0.40676419,
+]
+
 
 class AsmEnv(gym.Env):
     def __init__(self, render_mode: Optional[str] = 'rgb_array', config={}):
