@@ -150,7 +150,7 @@ class AsmEnv(gym.Env):
         self._render_fn(self)
     
     def observe(self):
-        return self._observe_fn(self)
+        return self._observation_fn(self)
 
     def harvest(self, mortality):
         return self._harvest_fn(self, mortality)
