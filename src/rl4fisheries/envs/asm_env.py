@@ -3,7 +3,7 @@ import gymnasium as gym
 import matplotlib.pyplot as plt
 from typing import Optional
 
-from rl4fisheries.envs.asm_fns import observe_1o, asm_pop_growth, harvest, render_asm, get_r_devs
+from rl4fisheries.envs.asm_fns import observe_1o, observe_2o, asm_pop_growth, harvest, render_asm, get_r_devs
 
 # equilibrium dist will in general depend on parameters, need a more robust way
 # to reset to random but not unrealistic starting distribution
@@ -71,10 +71,17 @@ class AsmEnv(gym.Env):
 
         #
         # functions
-        self._observation_fn = config.get("observation_fn", observe_1o)
         self._harvest_fn = config.get("harvest_fn", harvest)
         self._pop_growth_fn = config.get("pop_growth_fn", asm_pop_growth)
         self._render_fn = config.get("render_fn", render_asm)
+        
+        # _observation_fn defaults to observe_2o unless "observation_fn_id" or "observation_fn" specified
+        obs_fn_choices = {"observe_1o": observe_1o, "observe_2o": observe_2o}        
+        self._observation_fn = obs_fn_choices[
+            config.get("observation_fn_id", "observe_2o")
+        ]
+        if "observation_fn" in config:
+            self._observation_fn = config["observation_fn"]
 
         #
         # render params
@@ -87,7 +94,7 @@ class AsmEnv(gym.Env):
 
         #
         # gym API
-        self.n_observs = config.get("n_observs", 1) # should match config["observation_fn"]!
+        self.n_observs = config.get("n_observs", 2) # should match config["observation_fn"] or config["observation_fn_id"]!
         
         self.action_space = gym.spaces.Box(
             np.array([-1], dtype=np.float32),

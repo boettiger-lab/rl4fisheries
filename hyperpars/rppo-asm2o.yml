@@ -2,30 +2,30 @@
 
 # algo overall
 algo: "RPPO"
-total_timesteps: 10000000
+total_timesteps: 20000000
 
 additional_imports: ["torch"]
 
 # env overall
 env_id: "Asm2o-v0"
 config: {}
-n_envs: 32
+n_envs: 4
 
 # io
 repo: "cboettig/rl-ecology"
 save_path: "../saved_agents"
 
 # # MINIMAL CONFIG
-id: "minimal"
-algo_config:
-    policy: 'MlpLstmPolicy'
-    tensorboard_log: "~/logs"
+# id: "minimal"
+# algo_config:
+#     policy: 'MlpLstmPolicy'
+#     tensorboard_log: "../../logs"
 
 # # SLOW LEARN
 # id: "slow"
 # algo_config:
 #     policy: 'MlpLstmPolicy'
-#     tensorboard_log: "~/logs"
+#     tensorboard_log: "../../logs"
 #     learning_rate: 0.0001
 #     # default learning rate = 0.0003
 
@@ -33,7 +33,7 @@ algo_config:
 # id: "extra-slow"
 # algo_config:
 #     policy: 'MlpLstmPolicy'
-#     tensorboard_log: "~/logs"
+#     tensorboard_log: "../../logs"
 #     learning_rate: 0.00003
 
 
@@ -46,7 +46,7 @@ algo_config:
 # algo_config:
 #     # normalize: True # not clear what this one actually does -- from the source code it seems to 'activate' VecNormalize, but more care & examination needed
 #     policy: 'MlpLstmPolicy'
-#     tensorboard_log: "~/logs"
+#     tensorboard_log: "../../logs"
 #     n_steps: 256
 #     batch_size: 256
 #     gae_lambda: 0.95
@@ -68,7 +68,7 @@ algo_config:
 # id: "cheetah"
 # algo_config:
 #     policy: 'MlpLstmPolicy'
-#     tensorboard_log: "~/logs"
+#     tensorboard_log: "../../logs"
 #     batch_size: 64
 #     n_steps: 512
 #     gamma: 0.98
@@ -88,26 +88,26 @@ algo_config:
 
 
 
-# # INVERTED PENDULUM
-# id: "inv_pend"
-# algo_config:
-#     tensorboard_log: "~/logs"
-#     policy: 'MlpLstmPolicy'
-#     n_steps: 2048
-#     batch_size: 64
-#     gae_lambda: 0.95
-#     gamma: 0.99
-#     n_epochs: 10
-#     ent_coef: 0.0
-#     learning_rate: 2.5e-4
-#     clip_range: 0.2
+# INVERTED PENDULUM
+id: "inv_pend"
+algo_config:
+    tensorboard_log: "../../logs"
+    policy: 'MlpLstmPolicy'
+    n_steps: 2048
+    batch_size: 64
+    gae_lambda: 0.95
+    gamma: 0.99
+    n_epochs: 10
+    ent_coef: 0.0
+    learning_rate: 2.5e-4
+    clip_range: 0.2
 
 
 # # MOUNTAIN CAR NO VEL
 
 # id: "mount_car"
 # algo_config:
-    # tensorboard_log: "~/logs"
+    # tensorboard_log: "../../logs"
     # policy: 'MlpLstmPolicy'
     # batch_size: 256
     # n_steps: 1024
@@ -125,3 +125,16 @@ algo_config:
     #                    lstm_hidden_size=32,
     #                    enable_critic_lstm=True,
     #                    net_arch=dict(pi=[64], vf=[64]))"
+
+# SPACE INVADERS V4
+# id: "space_invaders"
+# algo_config:
+#     tensorboard_log: "../../logs"
+#     policy: 'MlpLstmPolicy'
+#     batch_size: 512
+#     # clip_range: 0.1
+#     ent_coef: 0.012
+#     frame_stack: 4
+#     learning_rate: 2.5e-4
+#     policy_kwargs: dict(enable_critic_lstm=False, lstm_hidden_size=128, )
+#     vf_coef: 0.5
