@@ -71,6 +71,7 @@ class AsmEnv(gym.Env):
 
         #
         # functions
+<<<<<<< HEAD
         self._harvest_fn = config.get("harvest_fn", harvest)
         self._pop_growth_fn = config.get("pop_growth_fn", asm_pop_growth)
         self._render_fn = config.get("render_fn", render_asm)
@@ -82,6 +83,12 @@ class AsmEnv(gym.Env):
         ]
         if "observation_fn" in config:
             self._observation_fn = config["observation_fn"]
+=======
+        self._observation_fn = config.get("observation_fn", observe_1o)
+        self._harvest_fn = config.get("harvest_fn", harvest)
+        self._pop_growth_fn = config.get("pop_growth_fn", asm_pop_growth)
+        self._render_fn = config.get("render_fn", render_asm)
+>>>>>>> 1681088fab038adfcfe298f438d5be5f31063dc2
 
         #
         # render params
@@ -94,7 +101,11 @@ class AsmEnv(gym.Env):
 
         #
         # gym API
+<<<<<<< HEAD
         self.n_observs = config.get("n_observs", 2) # should match config["observation_fn"] or config["observation_fn_id"]!
+=======
+        self.n_observs = config.get("n_observs", 1) # should match config["observation_fn"]!
+>>>>>>> 1681088fab038adfcfe298f438d5be5f31063dc2
         
         self.action_space = gym.spaces.Box(
             np.array([-1], dtype=np.float32),

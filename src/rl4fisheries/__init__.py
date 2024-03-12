@@ -18,3 +18,4 @@ register(id="AsmEsc-v0", entry_point="rl4fisheries.envs.asm_esc:AsmEsc")
 register(id="Asm2o-v0", entry_point="rl4fisheries.envs.asm_2o:Asm2o")
 # action is harvest, but observes both total count and mean biomass
 register(id="AsmEnv", entry_point="rl4fisheries.envs.asm_env:AsmEnv")
+
