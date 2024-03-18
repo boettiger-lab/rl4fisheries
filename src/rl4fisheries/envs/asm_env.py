@@ -197,7 +197,8 @@ class AsmEnv(gym.Env):
     def initialize_population(self):
         p = self.parameters  # snag those pars
         ninit = np.float32([0] * p["n_age"])  # initial numbers
-        survey_vul = ninit.copy()  # vulnerability
+        survey_vul = ninit.copy()  # survey vulnerability
+        harvest_vul = ninit.copy()  # harvest vulnerability
         wt = ninit.copy()  # weight
         mat = ninit.copy()  # maturity
         Lo = ninit.copy()  # survivorship unfished
