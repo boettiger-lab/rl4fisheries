@@ -207,6 +207,7 @@ class AsmEnv(gym.Env):
         # leading array calculations to get vul-at-age, wt-at-age, etc.
         for a in range(0, p["n_age"], 1):
             survey_vul[a] = 1 / (1 + np.exp(-p["asl"] * (p["ages"][a] - p["ahv"])))
+            harvest_vul[a] = survey_vul[a]
             wt[a] = pow(
                 (1 - np.exp(-p["vbk"] * p["ages"][a])), 3
             )  # 3 --> isometric growth
@@ -222,8 +223,8 @@ class AsmEnv(gym.Env):
                 Lf[a] = (
                     Lf[a - 1]
                     * p["s"]
-                    * (1 - survey_vul[a - 1] * p["uo"])
-                    / (1 - p["s"] * (1 - survey_vul[a - 1] * p["uo"]))
+                    * (1 - harvest_vul[a - 1] * p["uo"])
+                    / (1 - p["s"] * (1 - harvest_vul[a - 1] * p["uo"]))
                 )
         
         ninit = np.array(p["rinit"]) * Lf
@@ -236,7 +237,7 @@ class AsmEnv(gym.Env):
         self.parameters["Lo"] = Lo
         self.parameters["Lf"] = Lf
         self.parameters["survey_vul"] = survey_vul
-        self.parameters["harvest_vul"] = survey_vul # TBD: change!
+        self.parameters["harvest_vul"] = harvest_vul # TBD: change!
         self.parameters["wt"] = wt
         self.parameters["min_wt"] = np.min(wt)
         self.parameters["max_wt"] = np.max(wt)
