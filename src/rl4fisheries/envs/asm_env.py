@@ -245,9 +245,9 @@ class AsmEnv(gym.Env):
         self.parameters["mwt"] = mwt
         self.parameters["bha"] = bha
         self.parameters["bhb"] = bhb
-        self.parameters["p_big"] = 0.05
-        self.parameters["sdr"] = 0.3
-        self.parameters["rho"] = 0
+        # self.parameters["p_big"] = 0.05 no need to reinitialize
+        # self.parameters["sdr"] = 0.3
+        # self.parameters["rho"] = 0
         n = np.array(ninit, dtype=np.float32)
         self.state = np.clip(n, 0, np.Inf)
         return self.state
