@@ -54,6 +54,10 @@ class AsmEnv(gym.Env):
             "rho": config.get("rho" , np.float32(0.0)),  # autocorrelation in recruitment sequence
             "sdv": config.get("sdv" , np.float32(1e-9)),  # sd in vulnerable biomass (survey)
             "sigma": config.get("sigma" , np.float32(1.5)),
+            # for survey_vul:
+            "lbar": config.get("lbar", np.float32(57.57)),
+            "linf": config.get("linf", np.float32(41.08)),
+            "survey_phi": config.get("survey_phi", np.float32(2.02)),
         }
         self.parameters["ages"] = range(
             1, self.parameters["n_age"] + 1
@@ -207,8 +211,9 @@ class AsmEnv(gym.Env):
 
         # leading array calculations to get vul-at-age, wt-at-age, etc.
         for a in range(0, p["n_age"], 1):
-            survey_vul[a] = 1 / (1 + np.exp(-p["asl"] * (p["ages"][a] - p["ahv"])))
-            harvest_vul[a] = survey_vul[a]
+            survey_vul[a] = (p["linf"] / p["lbar"]) * (1 - np.exp(-p["vbk"] * p["ages"][a])) ** (p["survey_phi"])
+            # 1 / (1 + np.exp(-p["asl"] * (p["ages"][a] - p["ahv"]))) # <- this harvest_vul was previously
+            harvest_vul[a] = 1 / (1 + np.exp(-(p["ages"][a] - p["ahv"]) / p["asl"]))
             wt[a] = pow(
                 (1 - np.exp(-p["vbk"] * p["ages"][a])), 3
             )  # 3 --> isometric growth
