@@ -223,7 +223,7 @@ class AsmEnv(gym.Env):
                 Lf[a] = 1
             elif a > 0 and a < (p["n_age"] - 1):
                 Lo[a] = Lo[a - 1] * p["s"]
-                Lf[a] = Lf[a - 1] * p["s"] * (1 - survey_vul[a - 1] * p["uo"])
+                Lf[a] = Lf[a - 1] * p["s"] * (1 - harvest_vul[a - 1] * p["uo"])
             elif a == (p["n_age"] - 1):
                 Lo[a] = Lo[a - 1] * p["s"] / (1 - p["s"])
                 Lf[a] = (
