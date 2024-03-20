@@ -10,7 +10,7 @@ def observe_2o(env):
     biomass_obs = 2 * env.surv_vul_b / env.bound - 1
 
     # mean weight:
-    if env.harv_vul_n==0:
+    if env.surv_vul_n==0:
         vulnuerable_mean_wt = 0
     else:
         vulnuerable_mean_wt = env.surv_vul_b / env.surv_vul_n
