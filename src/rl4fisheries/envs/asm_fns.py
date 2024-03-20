@@ -51,7 +51,7 @@ def harvest(env, mortality):
     
     # Side effect portion of fn (tbd: discuss - abar and wbar not otherwise used in env)
     #
-    if sum(env.state) > 0:
+    if (sum(env.state) > 0) and (sum(env.state * p["wt"]) > 0):
         env.abar = (
             sum(p["survey_vul"] * np.array(p["ages"]) * env.state) 
             / sum(env.state)
