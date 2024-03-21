@@ -155,31 +155,3 @@ def render_asm(env):
         return np.transpose(
             np.array(pygame.surfarray.pixels3d(env.screen)), axes=(1, 0, 2)
         )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

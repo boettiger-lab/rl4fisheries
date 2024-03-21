@@ -256,4 +256,3 @@ class AsmEnv(gym.Env):
         n = np.array(ninit, dtype=np.float32)
         self.state = np.clip(n, 0, np.Inf)
         return self.state
-    
