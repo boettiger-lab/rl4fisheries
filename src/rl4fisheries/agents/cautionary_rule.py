@@ -8,16 +8,19 @@ from .unit_interface import unitInterface
 
 
 class CautionaryRule:
-    def __init__(self, x1=0, x2=1, y2=1, obs_bounds=1, **kwargs):
+    def __init__(self, env, x1=0, x2=1, y2=1, obs_bounds=1, **kwargs):
         self.ui = unitInterface(bounds=obs_bounds)
         self.x1 = x1
         self.x2 = x2
         self.y2 = y2
         self.policy_type = "CautionaryRule_piecewise_linear"
+        self.env = env
 
         assert x1 <= x2, "CautionaryRule error: x1 <= x2" 
 
     def predict(self, observation, **kwargs):
+        if isVecObs(observation, self.env):
+            observation = observation[0]
         pop = self.ui.to_natural_units(observation)
         raw_prediction = np.clip( self.predict_raw(pop), 0, 1)
         return np.float32([2 * raw_prediction - 1]), {}
