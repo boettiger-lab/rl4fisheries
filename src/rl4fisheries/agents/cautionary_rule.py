@@ -6,6 +6,7 @@ import polars as pl
 from tqdm import tqdm
 from .unit_interface import unitInterface
 
+from rl4fisheries.agents.common import isVecObs
 
 class CautionaryRule:
     def __init__(self, env, x1=0, x2=1, y2=1, obs_bounds=1, **kwargs):

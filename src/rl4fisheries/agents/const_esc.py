@@ -4,6 +4,8 @@ import numpy as np
 import polars as pl
 from tqdm import tqdm
 
+from rl4fisheries.agents.common import isVecObs
+
 class ConstEsc:
     def __init__(self, env, escapement=0, bounds = 1, **kwargs):
         from .unit_interface import unitInterface
@@ -19,7 +21,7 @@ class ConstEsc:
             observation = observation[0]
         pop = self.ui.to_natural_units(observation)
         raw_prediction = self.predict_raw(pop)
-        return 2 * raw_prediction - 1, {}
+        return np.float32([2 * raw_prediction - 1]), {}
 
     def predict_raw(self, pop):
         population = pop[0]
