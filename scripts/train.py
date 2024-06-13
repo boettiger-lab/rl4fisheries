@@ -17,6 +17,8 @@ from huggingface_hub import hf_hub_download, HfApi, login
 
 import os
 
+# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+
 # transform to absolute file path
 abs_filepath = os.path.abspath(args.file)
 
@@ -26,7 +28,11 @@ dname = os.path.dirname(abspath)
 os.chdir(dname)
 
 # train
-save_id, options = sb3_train_save_checkpoints(abs_filepath)
+save_id, options = sb3_train_save_checkpoints(
+    abs_filepath,
+    checkpoint_freq=2_500_000, 
+    checkpoint_start=5_000_000
+)
 fname = os.path.basename(save_id)
 
 # hf upload
