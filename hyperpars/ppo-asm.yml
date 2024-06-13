@@ -1,40 +1,42 @@
 # algo 
 algo: "PPO"
-total_timesteps: 4000000
+total_timesteps: 40000000
 algo_config:
     tensorboard_log: "../../../logs"
     #
     policy: 'MlpPolicy'
-    batch_size: 512
-    gamma: 0.9999
-    learning_rate: !!float 7.77e-05
-    ent_coef: 0.00429
-    clip_range: 0.1
-    gae_lambda: 0.9
-    max_grad_norm: 5
-    vf_coef: 0.19
+    # learning_rate: 0.00015
+    policy_kwargs: "dict(net_arch=[256, 128, 128, 32])"
+    #
+    # batch_size: 512
+    # gamma: 0.9999
+    # learning_rate: !!float 7.77e-05
+    # ent_coef: 0.00429
+    # clip_range: 0.1
+    # gae_lambda: 0.9
+    # max_grad_norm: 5
+    # vf_coef: 0.19
     # policy_kwargs: "dict(log_std_init=-3.29, ortho_init=False, net_arch=[256, 128])"
-    policy_kwargs: "dict(net_arch=[300, 200])"
+    # policy_kwargs: "dict(net_arch=[256, 128])"
     use_sde: True
-    clip_range: 0.1
+    # clip_range: 0.1
 
 # env
 env_id: "AsmEnv"
 config: 
-    observation_fn_id: 'observe_1o'
-    n_observs: 1
-    harvest_fn_name: "trophy"
-    n_trophy_ages: 10
-    # upow: 0.6
-    # use_custom_harv_vul: True
-    # use_custom_surv_vul: True
+    observation_fn_id: 'observe_2o'
+    n_observs: 2
+    #
+    harvest_fn_name: "default"
+    # n_trophy_ages: 10
+    upow: 1
 n_envs: 12
 
 # io
 repo: "cboettig/rl-ecology"
-save_path: "../saved_agents/results/"
+save_path: "../saved_agents/long_tests/"
 
 # misc
-id: "results-trophy-nage-10-1obs-hyperpars-larger-net"
+id: "UM1-256-128-128-32-long"
 # id: "short-test"
 additional_imports: ["torch"]
