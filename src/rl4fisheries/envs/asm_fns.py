@@ -240,6 +240,31 @@ def get_r_devs(n_year, p_big=0.05, sdr=0.3, rho=0):
         dev_last = sdr * n_rand[t] + rho * dev_last
     return r_mult
 
+def get_r_devs_logn(n_year, p_big=0.05, sdr=0.3, rho=0):
+    """
+    f(x) to create recruitment deviates, which are multiplied
+    by the stock-recruitment prediction in the age-structured model
+
+    args:
+    n_year: number of deviates required for simulation
+    p_big: Pr(big year class)
+    r_big: magnitude of big year class
+    sdr: sd of recruitment
+    rho: autocorrelation in recruitment sequence
+    returns:
+    vector of recruitment deviates of length n_year
+
+    """
+    r_mult = np.float32([1] * n_year)
+    r_mult[0] = np.exp(np.random.normal(loc=0, scale=1.2))
+    for t in range(1,n_year):
+        r_mult[t] = (
+            (1-rho) * np.exp(np.random.normal(loc=0, scale=1.2)) 
+            + rho * r_mult[t-1]
+        )
+    return np.clip(r_mult, 0, None)
+
+
 def get_r_devs_v2(n_year, p_big=0.05, sdr=0.3, rho=0):
     """
     f(x) to create recruitment deviates, which are multiplied

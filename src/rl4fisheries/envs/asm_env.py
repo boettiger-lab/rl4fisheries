@@ -12,6 +12,7 @@ from rl4fisheries.envs.asm_fns import (
     render_asm, 
     get_r_devs,
     get_r_devs_v2,
+    get_r_devs_logn,
     observe_mwt,
     observe_full,
 )
@@ -74,8 +75,8 @@ class AsmEnv(gym.Env):
             1, self.parameters["n_age"] + 1
         )  # vector of ages for calculations
         self.reproducibility_mode = config.get('reproducibility_mode', False)
-        self.get_r_devs_version = config.get('get_r_devs_version', 'v1')
-        self.get_r_devs = {'v1': get_r_devs, 'v2': get_r_devs_v2}[self.get_r_devs_version]
+        self.get_r_devs_version = config.get('get_r_devs_version', 'log_normal')
+        self.get_r_devs = {'v1': get_r_devs, 'v2': get_r_devs_v2, 'log_normal': get_r_devs_logn}[self.get_r_devs_version]
         if self.reproducibility_mode:
             if "r_devs" in config:
                 self.fixed_r_devs = config["r_devs"]
