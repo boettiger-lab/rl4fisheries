@@ -4,12 +4,10 @@
 scriptdir="$(dirname "$0")"
 cd "$scriptdir"
 
-# gp
-python fixed_policy_opt.py -p msy -v True -o gp &
-python fixed_policy_opt.py -p esc -v True -o gp &
-python fixed_policy_opt.py -p cr -v True -o gp &
+# hf
+python hf_login.py
 
-# gbrt
-python fixed_policy_opt.py -p msy -v True -o gbrt &
-python fixed_policy_opt.py -p esc -v True -o gbrt &
-python fixed_policy_opt.py -p cr -v True -o gbrt &
+# gp
+python tune.py -f ../hyperpars/for_results/fixed_policy_UM1.yml
+python tune.py -f ../hyperpars/for_results/fixed_policy_UM2.yml
+python tune.py -f ../hyperpars/for_results/fixed_policy_UM3.yml

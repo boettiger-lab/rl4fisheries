@@ -37,7 +37,8 @@ def algorithm(algo):
     }
     return algos[algo]
 
-def sb3_train(config_file, **kwargs):
+def sb3_train_old(config_file, **kwargs):
+    # deprecated
     with open(config_file, "r") as stream:
         options = yaml.safe_load(stream)
         options = {**options, **kwargs}
@@ -73,7 +74,7 @@ def sb3_train(config_file, **kwargs):
     return save_id, options
 
 
-def sb3_train_v2(config_file, **kwargs):
+def sb3_train(config_file, **kwargs):
     with open(config_file, "r") as stream:
         options = yaml.safe_load(stream)
         options = {**options, **kwargs}
@@ -103,7 +104,7 @@ def sb3_train_v2(config_file, **kwargs):
     if "id" in options:
         options["id"] = "-" + options["id"]
     model_id = options["algo"] + "-" + options["env_id"]  + options.get("id", "")
-    save_id = os.path.join(options["save_path"], model_id)
+    save_id = os.path.join(options["save_path"], model_id) + ".zip"
 
     model = ALGO(
         env=env,
@@ -118,3 +119,84 @@ def sb3_train_v2(config_file, **kwargs):
     print(f"Saved {options['algo']} model at {save_id}")
     
     return save_id, options
+
+
+def sb3_train_save_checkpoints(config_file, checkpoint_freq=500_000, checkpoint_start=4_000_000, **kwargs):
+    with open(config_file, "r") as stream:
+        options = yaml.safe_load(stream)
+        options = {**options, **kwargs}
+
+    if 'additional_imports' in options:
+        import importlib 
+        for module in options['additional_imports']:
+            print(f"importing {module}")
+            module = importlib.import_module(module)
+            globals()[module.__name__] = module
+    
+    if "n_envs" in options:
+        env = make_vec_env(
+            options["env_id"], options["n_envs"], env_kwargs={"config": options["config"]}
+        )
+    else:
+        env = gym.make(options["env_id"])
+
+    if (
+        'policy_kwargs' in options['algo_config'] and 
+        isinstance(options['algo_config']['policy_kwargs'], str)
+    ):
+        options['algo_config']['policy_kwargs'] = eval(options['algo_config']['policy_kwargs'])
+    
+    ALGO = algorithm(options["algo"])
+    if "id" in options:
+        options["id"] = "-" + options["id"]
+    model_id = options["algo"] + "-" + options["env_id"]  + options.get("id", "")
+    save_id = os.path.join(options["save_path"], model_id) 
+
+    model = ALGO(
+        env=env,
+        **options['algo_config']
+    )
+
+    progress_bar = options.get("progress_bar", False)
+
+    #
+    ## TRAINING
+    model.learn(
+        total_timesteps=min(options["total_timesteps"], checkpoint_start), 
+        tb_log_name=model_id, 
+        progress_bar=progress_bar,
+    )
+    model.save(save_id+"-chkpnt1.zip")
+    print(f"Saved {options['algo']} checkpoint at {save_id+'-chkpnt1.zip'}")
+    if options["total_timesteps"]<=checkpoint_start:
+        return save_id+'-chkpnt1.zip', options
+    #
+    timesteps_now = checkpoint_start
+    i = 1
+    while True:
+        i+=1
+        model.learn(
+            total_timesteps=checkpoint_freq, 
+            tb_log_name=model_id, 
+            progress_bar=progress_bar,
+        )
+        model.save(save_id+f"-chkpnt{i}.zip")
+        print(f"now ...-chkpnt{i}.zip")
+        timesteps_now += checkpoint_freq
+        if timesteps_now >= options["total_timesteps"]:
+            return save_id + f"-chkpnt{i}.zip", options
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    

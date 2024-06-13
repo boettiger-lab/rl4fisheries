@@ -1,0 +1,8 @@
+config:
+    upow: 1
+    harvest_fn_name: "trophy"
+    n_trophy_ages: 10
+n_eval_episodes: 250
+n_calls: 70
+id: "UM3"
+repo_id: "boettiger-lab/rl4eco"

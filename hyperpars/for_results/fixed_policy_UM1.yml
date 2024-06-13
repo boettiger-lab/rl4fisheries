@@ -1,0 +1,7 @@
+config:
+    upow: 1
+    harvest_fn_name: "default"
+n_eval_episodes: 250
+n_calls: 70
+id: "UM1"
+repo_id: "boettiger-lab/rl4eco"
