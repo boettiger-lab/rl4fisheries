@@ -8,11 +8,12 @@ from rl4fisheries.envs.asm_fns import (
     observe_total, observe_total_2o, 
     observe_total_2o_v2,
     asm_pop_growth, 
-    harvest, trophy_harvest,
+    harvest, trophy_harvest, enforce_min_harvest,
     render_asm, 
     get_r_devs,
     get_r_devs_v2,
     observe_mwt,
+    observe_full,
 )
 
 # equilibrium dist will in general depend on parameters, need a more robust way
@@ -110,7 +111,7 @@ class AsmEnv(gym.Env):
 
         #
         # functions
-        HARV_FNS = {'default': harvest, 'trophy': trophy_harvest}
+        HARV_FNS = {'default': harvest, 'trophy': trophy_harvest, 'enforce_min': enforce_min_harvest}
         self.harv_fn_name = config.get("harvest_fn_name", "default")
         self._harvest_fn = HARV_FNS[self.harv_fn_name]
         if self.harv_fn_name == 'trophy':
@@ -127,6 +128,7 @@ class AsmEnv(gym.Env):
             "observe_total_2o": observe_total_2o,
             "observe_total_2o_v2": observe_total_2o_v2,
             "observe_mwt": observe_mwt,
+            "observe_full": observe_full,
         }        
         self._observation_fn = obs_fn_choices[
             config.get("observation_fn_id", "observe_2o")

@@ -1,5 +1,11 @@
 import numpy as np
 
+def observe_full(env):
+    # return 2 * env.state / env.bound - 1
+    obs = np.clip(2 * env.state / 5 - 1, -1, 1)
+    obs = np.float32([age_obs for age_obs in obs])
+    return obs
+
 def observe_total(env):
     total_pop = np.float32([np.sum(env.state)])
     return 2 * total_pop / env.bound - 1
@@ -164,6 +170,39 @@ def trophy_harvest(env, mortality):
         + env.n_trophy_ages * [1]
     )
     reward = sum(trophy_reward_dist * age_resolved_harvests)
+    return new_state, reward
+
+def enforce_min_harvest(env, mortality):
+    # self.vulb = sum(p["harvest_vul"] * n * p["wt"])
+    # self.vbobs = self.vulb  # could multiply this by random deviate # now done in env.update_vuls()
+    p = env.parameters
+    # env.ssb = sum(p["mwt"] * env.state) # now done in env.update_ssb()
+    
+    # Side effect portion of fn (tbd: discuss - abar and wbar not otherwise used in env)
+    #
+    if (sum(env.state) > 0) and (sum(env.state * p["wt"]) > 0):
+        env.abar = (
+            sum(p["survey_vul"] * np.array(p["ages"]) * env.state) 
+            / sum(env.state)
+        )
+        env.wbar = (
+            sum(p["survey_vul"] * p["wt"] * env.state) 
+            / sum(env.state * p["wt"])
+        )
+    else:
+        env.abar = 0
+        env.wbar = 0
+    #
+    #
+    # true_mortality = np.clip(mortality[0] * (1 + 0.05 * np.random.normal()), 0, 1)
+    true_mortality = mortality[0]
+    yieldf = true_mortality * env.harv_vul_b  # fishery yield
+
+    if yieldf < 0.001:
+        reward = -1
+    else:
+        reward = yieldf ** p["upow"]  # this is utility
+    new_state = p["s"] * env.state * (1 - p["harvest_vul"] * true_mortality)  # remove fish
     return new_state, reward
 
 def get_r_devs(n_year, p_big=0.05, sdr=0.3, rho=0):
