@@ -240,29 +240,53 @@ def get_r_devs(n_year, p_big=0.05, sdr=0.3, rho=0):
         dev_last = sdr * n_rand[t] + rho * dev_last
     return r_mult
 
-def get_r_devs_logn(n_year, p_big=0.05, sdr=0.3, rho=0):
+def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5):
     """
     f(x) to create recruitment deviates, which are multiplied
     by the stock-recruitment prediction in the age-structured model
 
+    params are set such that < x > = 1 for x sampled from f.
+
     args:
     n_year: number of deviates required for simulation
-    p_big: Pr(big year class)
-    r_big: magnitude of big year class
-    sdr: sd of recruitment
+    sdr: sd of recruitment exponential noise
     rho: autocorrelation in recruitment sequence
+    x1: width of the distribution of 'small school deviations' = [0, x1]
+    
     returns:
-    vector of recruitment deviates of length n_year
+    vector of recruitment deviates of length n_year, composed of two terms:
+
+    1. exponential term with autocorrelation (with values between 1 and exp(sdr))
+    2. piece-wise constant term, composed of two uniform distributions:
+        2.1 one representing small school events, with range [0, x1] and height y1
+        2.2 one representing large school events, with range [10, 30] and height y2
 
     """
-    generator = np.random.Generator(np.random.PCG64()) # recommended rand numb syntax for new numpy code
+    def one_rdev(dev_last, sdr=sdr, rho=rho, x1=x1):
+        generator = np.random.Generator(np.random.PCG64())
+        unif = generator.random() # [0, 1] uniform
+        #
+        exp_term = np.exp(sdr * unif + rho * dev_last)
+        dev_last = sdr * unif + rho * dev_last
+        alpha = sdr / (np.exp(sdr) - 1) # inverse mean of the exponential term
+        #
+        #
+        # sample from piecewise constant term (y1 on [0, x1] and y2 on [10, 30]
+        y1 = (1 - alpha / 20) / (x1 * (1 - x1 / 40))
+        p_big = 20 * y1
+        big_event = generator.binomial(n=2, p=p_big)
+        if big_event == 1:
+            pwc_term = 10 + 20 * generator.random()
+        else:
+            pwc_term = x1 * generator.random()
+        #
+        return exp_term * pwc_term, dev_last
+        
     r_mult = np.float32([1] * n_year)
-    r_mult[0] = generator.lognormal(mean=0, sigma=2)
-    for t in range(1,n_year):
-        r_mult[t] = (
-            (1-rho) * np.random.lognormal(mean=0, sigma=2)
-            + rho * r_mult[t-1]
-        )
+    r_mult[0], dev_last = one_rdev(dev_last = 0)
+    for t in range(n_year):
+        r_mult[t], dev_last = one_rdev(dev_last)
+        
     return np.clip(r_mult, 0, None)
 
 
