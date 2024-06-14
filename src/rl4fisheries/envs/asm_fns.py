@@ -240,7 +240,7 @@ def get_r_devs(n_year, p_big=0.05, sdr=0.3, rho=0):
         dev_last = sdr * n_rand[t] + rho * dev_last
     return r_mult
 
-def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5):
+def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5, **kwargs):
     """
     f(x) to create recruitment deviates, which are multiplied
     by the stock-recruitment prediction in the age-structured model
