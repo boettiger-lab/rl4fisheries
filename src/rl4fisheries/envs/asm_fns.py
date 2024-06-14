@@ -255,11 +255,12 @@ def get_r_devs_logn(n_year, p_big=0.05, sdr=0.3, rho=0):
     vector of recruitment deviates of length n_year
 
     """
+    generator = np.random.Generator(np.random.PCG64()) # recommended rand numb syntax for new numpy code
     r_mult = np.float32([1] * n_year)
-    r_mult[0] = np.exp(np.random.normal(loc=0, scale=1.2))
+    r_mult[0] = generator.lognormal(mean=0, sigma=2)
     for t in range(1,n_year):
         r_mult[t] = (
-            (1-rho) * np.exp(np.random.normal(loc=0, scale=1.2)) 
+            (1-rho) * np.random.lognormal(mean=0, sigma=2)
             + rho * r_mult[t-1]
         )
     return np.clip(r_mult, 0, None)
