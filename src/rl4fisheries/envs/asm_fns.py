@@ -273,7 +273,8 @@ def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5):
         #
         # sample from piecewise constant term (y1 on [0, x1] and y2 on [10, 30]
         y1 = (1 - alpha / 20) / (x1 * (1 - x1 / 40))
-        p_big = 20 * y1
+        y2 = (1 - x1 * y1) / 20
+        p_big = 20 * y2
         big_event = generator.binomial(n=2, p=p_big)
         if big_event == 1:
             pwc_term = 10 + 20 * generator.random()
