@@ -248,19 +248,19 @@ def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5):
     params are set such that < x > = 1 for x sampled from f.
 
     args:
-    n_year: number of deviates required for simulation
-    sdr: sd of recruitment exponential noise
-    rho: autocorrelation in recruitment sequence
-    x1: width of the distribution of 'small school deviations' = [0, x1]
-    
+        - n_year: number of deviates required for simulation
+        - sdr: sd of recruitment exponential noise
+        - rho: autocorrelation in recruitment sequence
+        - x1: width of the distribution of 'small school deviations' = [0, x1]
     returns:
-    vector of recruitment deviates of length n_year, composed of two terms:
+        vector of recruitment deviates of length n_year, composed of two terms:
 
     1. exponential term with autocorrelation (with values between 1 and exp(sdr))
     2. piece-wise constant term, composed of two uniform distributions:
         2.1 one representing small school events, with range [0, x1] and height y1
         2.2 one representing large school events, with range [10, 30] and height y2
 
+    with the current defaults, approximately: p_big = 0.03, and alpha = 0.85.
     """
     def one_rdev(dev_last, sdr=sdr, rho=rho, x1=x1):
         generator = np.random.Generator(np.random.PCG64())
@@ -271,7 +271,7 @@ def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5):
         alpha = sdr / (np.exp(sdr) - 1) # inverse mean of the exponential term
         #
         #
-        # sample from piecewise constant term (y1 on [0, x1] and y2 on [10, 30]
+        # sample from piecewise constant term (pdf(x) = y1 on [0, x1] and pdf(x)=y2 on [10, 30])
         y1 = (1 - alpha / 20) / (x1 * (1 - x1 / 40))
         y2 = (1 - x1 * y1) / 20
         p_big = 20 * y2
