@@ -13,6 +13,7 @@ from rl4fisheries.envs.asm_fns import (
     get_r_devs,
     get_r_devs_v2,
     get_r_devs_mean_corrected,
+    get_r_devs_logn_unif,
     observe_mwt,
     observe_full,
 )
@@ -61,7 +62,7 @@ class AsmEnv(gym.Env):
             "ahv": config.get("ahv" , np.float32(5.0)),  # vul par 2
             "ahm": config.get("ahm" , np.float32(6.0)),  # age 50% maturity
             "upow": config.get("upow" , np.float32(1.0)),  # 1 = max yield objective, < 1 = HARA
-            "p_big": config.get("p_big" , np.float32(0.05)),  # probability of big year class
+            "p_big": config.get("p_big" , np.float32(0.025)),  # probability of big year class
             "sdr": config.get("sdr" , np.float32(0.3)),  # recruit sd given stock-recruit relationship
             "rho": config.get("rho" , np.float32(0.0)),  # autocorrelation in recruitment sequence
             "sdv": config.get("sdv" , np.float32(1e-9)),  # sd in vulnerable biomass (survey)
@@ -75,8 +76,12 @@ class AsmEnv(gym.Env):
             1, self.parameters["n_age"] + 1
         )  # vector of ages for calculations
         self.reproducibility_mode = config.get('reproducibility_mode', False)
-        self.get_r_devs_version = config.get('get_r_devs_version', 'mean_corrected')
-        self.get_r_devs = {'v1': get_r_devs, 'v2': get_r_devs_v2, 'mean_corrected': get_r_devs_mean_corrected}[self.get_r_devs_version]
+        self.get_r_devs_version = config.get('get_r_devs_version', 'logn_unif')
+        self.get_r_devs = {
+            'v1': get_r_devs, 'v2': get_r_devs_v2, 
+            'mean_corrected': get_r_devs_mean_corrected,
+            'logn_unif': get_r_devs_logn_unif,
+        }[self.get_r_devs_version]
         if self.reproducibility_mode:
             if "r_devs" in config:
                 self.fixed_r_devs = config["r_devs"]

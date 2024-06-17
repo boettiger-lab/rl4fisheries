@@ -295,6 +295,46 @@ def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5, **kwargs):
         
     return np.clip(r_mult, 0, None)
 
+def get_r_devs_logn_unif(n_year, sdr=0.3, rho=0, p_big=0.025):
+    """
+    f(x) to create recruitment deviates, which are multiplied
+    by the stock-recruitment prediction in the age-structured model
+
+    params are set such that < x > = 1 for x sampled from f.
+
+    args:
+        - n_year: number of deviates required for simulation
+        - sdr: sd of recruitment exponential noise
+        - rho: autocorrelation in recruitment sequence
+        - x1: width of the distribution of 'small school deviations' = [0, x1]
+    returns:
+        vector of recruitment deviates of length n_year, composed of two terms:
+
+    """
+    def one_rdev(dev_last, sdr=sdr, rho=rho, p_big=p_big):
+        generator = np.random.Generator(np.random.PCG64())
+        #
+        log_n_mu = 0
+        log_n_sd = 0.4
+        log_n_mean = np.exp(log_n_mu + 0.5 * log_n_sd**2)
+        scaling = 1 / (4 * log_n_mean)
+        #
+        #
+        # sample from piecewise constant term (pdf(x) = y1 on [0, x1] and pdf(x)=y2 on [10, 30])
+        big_event = generator.binomial(n=2, p=p_big)
+        if big_event == 1:
+            multiplier = 10 + 20 * generator.random()
+        else:
+            multiplier = scaling * generator.lognormal(mean=log_n_mu, sigma=log_n_sd)
+        #
+        return multiplier, dev_last
+        
+    r_mult = np.float32([1] * n_year)
+    r_mult[0], dev_last = one_rdev(dev_last = 0)
+    for t in range(n_year):
+        r_mult[t], dev_last = one_rdev(dev_last)
+        
+    return np.clip(r_mult, 0, None)
 
 def get_r_devs_v2(n_year, p_big=0.05, sdr=0.3, rho=0):
     """
