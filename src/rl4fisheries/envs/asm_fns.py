@@ -295,7 +295,7 @@ def get_r_devs_mean_corrected(n_year, sdr=0.3, rho=0, x1=0.5, **kwargs):
         
     return np.clip(r_mult, 0, None)
 
-def get_r_devs_logn_unif(n_year, sdr=0.3, rho=0, p_big=0.025):
+def get_r_devs_logn_unif(n_year, sdr=0.4, rho=0, p_big=0.025):
     """
     f(x) to create recruitment deviates, which are multiplied
     by the stock-recruitment prediction in the age-structured model
@@ -315,7 +315,7 @@ def get_r_devs_logn_unif(n_year, sdr=0.3, rho=0, p_big=0.025):
         generator = np.random.Generator(np.random.PCG64())
         #
         log_n_mu = 0
-        log_n_sd = 0.4
+        log_n_sd = sdr
         log_n_mean = np.exp(log_n_mu + 0.5 * log_n_sd**2)
         scaling = 1 / (4 * log_n_mean)
         #
