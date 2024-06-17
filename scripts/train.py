@@ -30,8 +30,8 @@ os.chdir(dname)
 # train
 save_id, options = sb3_train_save_checkpoints(
     abs_filepath,
-    checkpoint_freq=2_500_000, 
-    checkpoint_start=5_000_000
+    checkpoint_freq=1_000_000, 
+    checkpoint_start=3_000_000
 )
 fname = os.path.basename(save_id)
 
