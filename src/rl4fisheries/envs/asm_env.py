@@ -10,10 +10,8 @@ from rl4fisheries.envs.asm_fns import (
     asm_pop_growth, 
     harvest, trophy_harvest, enforce_min_harvest,
     render_asm, 
-    get_r_devs,
-    get_r_devs_v2,
-    get_r_devs_mean_corrected,
     get_r_devs_logn_unif,
+    get_r_devs_v2,
     observe_mwt,
     observe_full,
 )
@@ -78,9 +76,8 @@ class AsmEnv(gym.Env):
         self.reproducibility_mode = config.get('reproducibility_mode', False)
         self.get_r_devs_version = config.get('get_r_devs_version', 'logn_unif')
         self.get_r_devs = {
-            'v1': get_r_devs, 'v2': get_r_devs_v2, 
-            'mean_corrected': get_r_devs_mean_corrected,
             'logn_unif': get_r_devs_logn_unif,
+            'v2': get_r_devs_v2, 
         }[self.get_r_devs_version]
         if self.reproducibility_mode:
             if "r_devs" in config:
