@@ -347,5 +347,5 @@ class AsmEnv(gym.Env):
         self.parameters["bhb"] = bhb
         #
         n = np.array(ninit, dtype=np.float32)
-        self.state = np.clip(n, 0, np.Inf)
+        self.state = np.clip(n, 0, None)
         return self.state

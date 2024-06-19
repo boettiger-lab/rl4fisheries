@@ -50,5 +50,5 @@ class AsmEnvEsc(AsmEnv):
             mortality = np.float32([0])
         else:
             mortality = (current_observed_pop - escapement) / current_observed_pop
-        mortality = np.clip(mortality, 0, np.inf)
+        mortality = np.clip(mortality, 0, None)
         return mortality
