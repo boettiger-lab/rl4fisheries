@@ -40,7 +40,7 @@ api = HfApi()
 try:
     api.upload_file(
         path_or_fileobj=save_id,
-        path_in_repo="sb3/rl4fisheries/"+fname,
+        path_in_repo="sb3/rl4fisheries/results/"+fname,
         repo_id="boettiger-lab/rl4eco",
         repo_type="model",
     )
