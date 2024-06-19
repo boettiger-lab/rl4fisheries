@@ -205,7 +205,6 @@ def enforce_min_harvest(env, mortality):
     new_state = p["s"] * env.state * (1 - p["harvest_vul"] * true_mortality)  # remove fish
     return new_state, reward
 
-
 def get_r_devs_logn_unif(n_year, sdr=0.4, rho=0, p_big=0.025):
     """
     f(x) to create recruitment deviates, which are multiplied
@@ -246,6 +245,10 @@ def get_r_devs_logn_unif(n_year, sdr=0.4, rho=0, p_big=0.025):
         r_mult[t], dev_last = one_rdev(dev_last)
         
     return np.clip(r_mult, 0, None)
+
+def get_r_devs(n_year, *args, **kwargs):
+    # for back compatibility on places I haven't found yet that still use the old r_devs
+    return get_r_devs_logn_unif(n_year, *args, **kwargs)
 
 def get_r_devs_v2(n_year, p_big=0.05, sdr=0.3, rho=0):
     """
