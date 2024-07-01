@@ -1,5 +1,7 @@
 from rl4fisheries import CautionaryRule, Msy, ConstEsc, AsmEnv
 
+import numpy as np
+
 #
 # Cautionary rule:
 
@@ -13,8 +15,8 @@ def test_CR_biomass():
             (agent.y2_pm1 == +1)
     ), "CR agent: Conversion of policy to [-1,+1] space lead to inconsistencies."
 
-    pred1, info1 = agent.predict(observation=-1)[0]
-    pred2, info2 = agent.predict(observation=+1)
+    pred1, info1 = agent.predict(observation=np.array([-1, 0]))
+    pred2, info2 = agent.predict(observation=np.array([+1,0]))
 
     assert (
             (pred1 == -1) and
@@ -41,8 +43,8 @@ def test_CR_mwt():
             (agent.y2_pm1 == +1)
     ), "CR agent: Conversion of policy to [-1,+1] space lead to inconsistencies."
 
-    pred1, info1 = agent.predict(observation=-1)[0]
-    pred2, info2 = agent.predict(observation=+1)
+    pred1, info1 = agent.predict(observation=np.array([0, -1]))
+    pred2, info2 = agent.predict(observation=np.array([0, +1]))
 
     assert (
             (pred1 == -1) and
