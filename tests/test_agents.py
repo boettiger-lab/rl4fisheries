@@ -1,4 +1,4 @@
-from rl4fisheries import CautionaryRule, Msy, ConstEscapement, AsmEnv
+from rl4fisheries import CautionaryRule, Msy, ConstEsc, AsmEnv
 
 #
 # Cautionary rule:
