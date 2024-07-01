@@ -18,7 +18,7 @@ def test_CR_biomass():
 
     assert (
             (pred1 == -1) and
-            (pred2 == +1) and
+            (pred2 == +1)
     ), "CR agent: agent.predict does not return expected prediction."
     
     assert (isinstance(info1, dict)) and (isinstance(info2, dict)), (
@@ -46,7 +46,7 @@ def test_CR_mwt():
 
     assert (
             (pred1 == -1) and
-            (pred2 == +1) and
+            (pred2 == +1)
     ), "CR agent: agent.predict does not return expected prediction."
     
     assert (isinstance(info1, dict)) and (isinstance(info2, dict)), (
