@@ -6,7 +6,7 @@ Models:
 - `asm_esc.py`: provides `AsmEscEnv()` which inherits from `AsmEnv` and has one difference to it: actions in `AsmEscEnv()` represent escapement levels rather than fishing intensities. 
 - `ams_cr_like.py`: provides `AsmCRLike()`. In this environment, mean weight is observed and the action is to set parameters `(x1, x2, y2)` for a biomass-based harvest control rule of the type `CautionaryRule` (specified below).
 
-Strategies evaluated with MSE: 
+Strategies evaluated with Bayesian Optimization: 
 
 - `agents.cautionary_rule.CautionaryRule`: piece-wise linear harvest-control rule specified by three parameters `(x1, x2, y2)`. Example plot (TBD).
 - `agents.msy.Msy`: constant mortality harvest control rule. Specified by one parameter `mortality`.
