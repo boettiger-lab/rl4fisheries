@@ -206,6 +206,29 @@ Using the nomenclature from the RL literature, these 1000-timestep simulations a
 
 \subsection{Observations}
 
+We model observations by simulating a survey carried out by a management agency tasked with managing the fishery. 
+These observations are subsequently used by the HCR to set a fishing mortality for a specific  time-step. 
+We consider two types of observations. 
+The first is an estimate of the stock biomass vulnerable to the management agency’s survey equipment,
+\begin{align}
+    \text{Stock. Biom. Obs.} = \bsurv = \sum_{a=1}^{20} B_a \vsurv(a),
+\end{align}
+where $\vsurv(a)$ models the vulnerability at age of the stock survey process (see \cite{cahill2022}, Eq. 15). 
+A second observation we consider is the mean weight of fish in the survey,
+\begin{align}
+    \text{Mean Wt. Obs.} = \text{Stock. Biom. Obs.} / \nsurv,
+\end{align}
+where $\nsurv$ is the number of fish observed in the survey,
+\begin{align}
+    \nsurv = \sum_{a=1}^{20} \frac{B_a \vsurv(a)}{w_a},
+\end{align}
+and where $w_a$ is the average weight at age $a$.
+Mean weight is easy for managers to observe and is important to consider in the context of spasmodically recruiting populations, since large recruitment events are correlated with dips in the mean weight of fish in the population.
+
+Here we emphasize that the system is thus only partially observed \cite{memarzadeh2019}-–-while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, the manager observes only a two-dimensional summary statistics (i.e. mean biomass, total biomass via standard monitoring surveys). 
+It is worth noting that while the model dynamics are Markovian in the full state space, the dynamics of these two observed states are not, making this a so-called Partially Observed Markov Decision Process, or POMDP.  
+This mathematical inconvenience significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, historically, the analysis of ecological POMDP problems has been restricted to much smaller models  (e.g., see \cite{williams2022}).
+
 \subsection{Utility models}
 
 \subsection{Harvest control strategies}
