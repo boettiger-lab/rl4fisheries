@@ -1,0 +1,140 @@
+\documentclass[floatfix,nofootinbib,longbibliography,notitlepage]{revtex4-1}
+
+%basic packages
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage[mathscr]{euscript}
+\usepackage{bbm}
+\usepackage{times}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{thmtools}
+%\usepackage{thm-restate}
+%\usepackage{enumitem}
+%\usepackage{amscd}
+%\usepackage{graphicx}
+%\usepackage{braket}
+\usepackage{physics}
+%\usepackage{multirow}
+%\usepackage{tikz}
+%\usetikzlibrary{quantikz}
+
+%colors
+\definecolor{Fabulous}{RGB}{220,0,100}
+
+%comments
+\newcommand{\fm}[1]{{\color{Fabulous}\bf [FMM: #1]}}
+
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
+\def\fmsy{F_{\text{MSY}}}
+\def\bmsy{B_{\text{MSY}}}
+
+\def\bsurv{B_{\text{survey}}}
+\def\vsurv{v_{\text{survey}}}
+\def\nsurv{N_{\text{survey}}}
+%
+\def\vharv{v_{\text{harvest}}}
+
+\def\obs{\text{obs}}
+
+
+%handy macros
+% eq + tab + enter: go to equation env
+% align + tab + enter: similar but align env
+
+\begin{document}
+
+\title{When do size/age composition observations improve harvest control decisions? 
+A machine learning case study on spasmodic age-structured populations}
+
+\author{Felipe Montealegre-Mora}
+\email{felimomo@berkeley.edu}
+\affiliation{\
+Department of Environmental Science, Policy and Management, University of California at Berkeley,  Berkeley, California, 94720, USA}
+\affiliation{\ 
+Eric and Wendy Schmidt Center for Data Science and Environment, University of California at  Berkeley, Berkeley, California, 94720, USA}
+
+\author{Carl Boettiger}
+\affiliation{\
+Department of Environmental Science, Policy and Management, University of California at Berkeley,  Berkeley, California, 94720, USA}
+
+\author{Carl J. Walters}
+\affiliation{\
+Institute for the Oceans and Fisheries, University of British Columbia, Vancouver, British Columbia, V6T 1Z4, Canada
+}
+
+\author{Christopher L. Cahill}
+\affiliation{\
+Quantitative Fisheries Center, Department of Fisheries and Wildlife, Michigan State University, East Lansing, Michigan, 48824, USA
+}
+
+\thanks{...
+}
+
+\date{\today}
+
+\begin{abstract}
+	In fishery science, harvest management of size-structured stochastic populations is a long-standing and  difficult problem. Rectilinear precautionary policies based on biomass and harvesting reference points have now become a standard approach to this problem. However, these policies are ultimately based on the theory of maximum sustainable yield and are theoretically grounded on the assumption that surplus production is stable in the fishery. This paradigm is challenged in fisheries with highly variable, spasmodic, recruitment. In this paper we explore the problem of designing harvest control rules for partially observed, age-structured, spasmodic fish populations using tools from reinforcement learning (RL) and Bayesian optimization. Our focus is on the case of Walleye fisheries in Alberta, Canada, whose highly variable recruitment dynamics have perplexed managers and ecologists. We optimized and evaluated policies using several complementary performance metrics. The main questions we addressed were: 1. How do standard policies based on reference points perform relative to numerically optimized policies? 2. Can an observation of mean fish weight, in addition to stock biomass, aid policy decisions? 
+\end{abstract}
+
+\maketitle
+
+\tableofcontents
+% so that the table of contents doesnt look weird:
+\makeatletter
+\let\toc@pre\relax
+\let\toc@post\relax
+\makeatother 
+
+%
+%
+%
+\section{Introduction}
+
+
+%
+%
+%
+\section{Methods}
+
+\subsection{Population dynamics}
+
+\subsection{Observations}
+
+\subsection{Utility models}
+
+\subsection{Harvest control strategies}
+
+\subsection{Bayesian optimization of fixed policy controls}
+
+\subsection{Harvest control via neural network: reinforcement learning optimization}
+
+\subsection{Policy evaluation}
+
+
+%
+%
+%
+\section{Results}
+
+
+%
+%
+%
+\section{Discussion}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\bibliographystyle{unsrt} %before it was abbrv
+\bibliography{fishery_refs}
+
+
+
+\end{document}
