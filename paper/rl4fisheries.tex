@@ -301,6 +301,34 @@ We emphasize, however, that all these choices on network structure were heuristi
 
 \subsection{Bayesian optimization of fixed policy controls}
 
+We used the framework of Bayesian optimization in order to find optimal parameters for the fixed policy HCRs. 
+A general introduction to this type of algorithm may be found on~\cite{frazier2018bayesian,head-skopt}. 
+Bayesian optimization algorithms solve the problem of minimizing an unknown objective function $f$ which one can only query with some stochasticity, i.e. where instead of being able to compute $f(x, y, z, \dots)$ exactly, we are only able to compute $f(x, y, z, \dots)+r$, where $r$ is random. 
+Thus, this type of algorithm is designed to be able to approximate a solution to the minimization problem
+\begin{align}
+    \mathrm{argmax}_{x,y,z,\dots} f(x,y,z,\dots)
+\end{align}
+even when one can only evaluate $f(x, y, z, \dots)$ ‘‘imperfectly.’’ 
+These algorithms are most useful in scenarios where evaluating $f(x, y, z, \dots)$ is computationally expensive because they tend to require much fewer queries (i.e. evaluations of $f(x, y, z, \dots)$ at particular points) than brute force optimization approaches.
+
+In our case, the arguments $(x, y, z, \dots)$ are the parameters in the HCR function. 
+That is, for the precautionary policy, the arguments are $x_1$, $x_2$, $y_2$ , whereas for the \textfmsy policy, the only argument is the mortality rate $F$. 
+We maximize the average utility obtained by a policy by optimizing over these parameters. 
+For example, for the constant mortality mortality policy,
+\begin{align}
+    \fmsy = \mathrm{argmax}_F \mathbb{E}[U(F)],
+\end{align}
+where $U(F)$ is the utility obtained by simulating an episode using a constant mortality $F$. 
+Note that $U(F)$ is thus a random variable since the dynamics are stochastic.
+
+Because of our system's high stochasticity, evaluating the mean episode reward afforded by any policy requires taking the average of many episodes and in our case we used 200 episodes. 
+
+We used the \emph{Gaussian process minimizer} algorithm from the \emph{scikit-optimize} package in Python to perform this optimization, and allowed the algorithm to evaluate the objective function at 70 different points. 
+The number of points was chosen heuristically—it was high enough for the optimization to converge, but low enough to provide reasonable runtimes. 
+Further details of how this optimization procedure is performed may be found in companion Jupyter notebooks.\footnote{
+Found in \url{https://github.com/boettiger-lab/rl4fisheries/tree/main/notebooks}
+}
+
 \subsection{Harvest control via neural network: reinforcement learning optimization}
 
 \subsection{Policy evaluation}
