@@ -1,4 +1,5 @@
-\documentclass[floatfix,nofootinbib,longbibliography,notitlepage]{revtex4-1}
+% \documentclass[floatfix,nofootinbib,longbibliography,notitlepage]{revtex4-1}
+\documentclass[floatfix,notitlepage]{revtex4-1}
 
 
 %basic packages
@@ -23,6 +24,11 @@
 %\usepackage{multirow}
 %\usepackage{tikz}
 %\usetikzlibrary{quantikz}
+
+\usepackage{graphicx}
+\graphicspath{ {./figures/} }
+
+% \usepackage[natbibapa]{apacite}
 
 %colors
 \definecolor{Fabulous}{RGB}{220,0,100}
@@ -378,6 +384,21 @@ To ease comparison between policies, we used the same time-series of stochastic 
 %
 \section{Results}
 
+We frame our results conceptually in Fig.~1.
+In Table 1 we show the parameter values obtained for the optimized fixed policies. The episode utilities obtained by these policies are displayed in Table 2 and Fig. 2. 
+With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for FMSY were within one standard deviation of its performance. 
+With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control. 
+Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
+
+\begin{figure}[h!]
+	\includegraphics[width=.9\linewidth]{conceptual.png}
+\caption{
+\label{fig:conceptual}
+Conceptual setting for our work.
+}
+\end{figure}
+
+
 
 %
 %
@@ -388,7 +409,7 @@ To ease comparison between policies, we used the same time-series of stochastic 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{unsrt} 
+\bibliographystyle{unsrtnat} 
 \bibliography{fishery_refs}
 
 
