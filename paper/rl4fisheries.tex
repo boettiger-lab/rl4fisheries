@@ -101,41 +101,41 @@ Quantitative Fisheries Center, Department of Fisheries and Wildlife, Michigan St
 \section{Introduction}
 
 Over the past two decades a wealth of literature has emerged that is aimed at solving sequential decision problems in diverse fields such as engineering, robotics, and control theory.  
-This work, collectively referred to as Reinforcement Learning (RL), has now advanced to the level needed to outperform human experts in many fields \cite{sutton-rl,bertsekas-rl}.  
+This work, collectively referred to as Reinforcement Learning (RL), has now advanced to the level needed to outperform human experts in many fields~\cite{sutton-rl,bertsekas-rl}.  
 For example, the application of RL has revolutionized games like chess, where the world’s top chess engines now almost always defeat the greatest chess players in the world. 
 Beyond simply outperforming experts, RL offers a fresh perspective on previously unsolvable problems—and in the case of chess, top players now incorporate strategies discovered by engines into their own repertoires that were once considered nonsensical by humans. 
-Lessons like these seem relevant to fisheries scientists, as a number of sustainability problems lie at the intersection of age-structured population dynamics and sequential decision making under uncertainty \cite{walters-hilborn-1978}, and for which methods like dynamic programming or analytical approaches break down due to computational costs or scalability issues related to the “curse of dimensionality.”  
+Lessons like these seem relevant to fisheries scientists, as a number of sustainability problems lie at the intersection of age-structured population dynamics and sequential decision making under uncertainty~\cite{walters-hilborn-1978}, and for which methods like dynamic programming or analytical approaches break down due to computational costs or scalability issues related to the “curse of dimensionality.”  
 It is in these complex decision-making contexts that RL shows much promise, and might serve as a useful guide for improving our collective intuition surrounding the design of feedback policies.
 
-In the absence of tractable analytical or dynamic programming solutions to feedback policy design in fisheries, simulation-based approaches like Management Strategy Evaluation (MSE) have emerged to evaluate trade-offs among alternative feedback policies or harvest control rules \cite{punt-mse}.
+In the absence of tractable analytical or dynamic programming solutions to feedback policy design in fisheries, simulation-based approaches like Management Strategy Evaluation (MSE) have emerged to evaluate trade-offs among alternative feedback policies or harvest control rules~\cite{punt-mse}.
 In an MSE, analysts first specify policies to test a priori, and only after the specification of a policy set is simulation then used to quantify the relative performance of those policies against explicit objective(s).
-While extensive application of the MSE approach has proved it to be a useful tool for informing harvest policy (\eg, \cite{edwards2016-mse}), it remains fundamentally limited to select among the a priori policy set chosen by analysts.  
-Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (\eg, see \cite{dfo2006}), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested.  
+While extensive application of the MSE approach has proved it to be a useful tool for informing harvest policy (\eg,~\cite{edwards2016-mse}), it remains fundamentally limited to select among the a priori policy set chosen by analysts.  
+Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (\eg, see~\cite{dfo2006}), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested.  
 In the context of feedback policy design this may be problematic, because feedback policy design is notoriously difficult, often counterintuitive, and because analysts typically limit themselves to 1-dimensional control rules based on stock biomass. 
 	
 The dynamics  of an age-structured population occurs in  high dimensional spaces, and thus in some situations it is possible for different states to correspond to the same total stock biomass.  
-For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. Not surprisingly, managers might prescribe different management actions  in  these different contexts (see similar arguments in \cite{hilborn2002}). 
+For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. Not surprisingly, managers might prescribe different management actions  in  these different contexts (see similar arguments in~\cite{hilborn2002}). 
 This dimensionality problem makes it difficult  to specify policies to test a priori. 
 While age-structure makes it difficult to specify good policies a priori, it also implies that  managers have access to more information than total biomass in many real-world situations. 
 For instance, knowing the mean fish weight in addition to total stock biomass can help the manager distinguish between a population with many small fish and one with a population biased towards large fish. 
 	
-Fish populations with highly variable recruitment are some of the most perplexing systems to learn from and thus in which to inform fisheries management \cite{hjort1914,caddy-gulland}, and thus might serve as a useful test case in which to explore the utility of RL for improving feedback policy design.  
-In this paper we define highly variable recruitment to mean that a fish population exhibits infrequent large year classes of at least 10-50 times the long-term average recruitment level (see \cite{caddy-gulland}).  
-While by definition such events are rare in any one system, a cursory review of the literature reveals that these types of fluctuations occur with some regularity in fisheries throughout the world (\eg, see \cite{fisch-etal-2019,licandeo-etal-2020}).  
-For example, while better fisheries management practices helped rebuild Northeast Atlantic fish stocks, it appears that of the stocks that displayed the strongest recoveries, record large year classes occurred at low abundance that drove stock productivity upward and out of low, collapsed states (see \cite{zimmermann2019improved}).  
-Similarly, Atlantic Redfish Sebastes fasciatus stocks off the eastern coast of Canada exhibit spasmodic recruitment fluctuations that make the application of standard stock assessment techniques and MSE challenging \cite{licandeo-etal-2020}.  
-In inland systems, Walleye Sander vitreus in Lake Erie increased from low abundance due to a large recruitment event in 2003, and this cohort has continued to support the bulk of one of most economically valuable recreational fisheries in the world for nearly a decade \cite{schmitt-vandergoot}.  
-In each of these examples, large recruitment events had marked effects on both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see \cite{punt2014, myers1998}).  
+Fish populations with highly variable recruitment are some of the most perplexing systems to learn from and thus in which to inform fisheries management~\cite{hjort1914,caddy-gulland}, and thus might serve as a useful test case in which to explore the utility of RL for improving feedback policy design.  
+In this paper we define highly variable recruitment to mean that a fish population exhibits infrequent large year classes of at least 10-50 times the long-term average recruitment level (see~\cite{caddy-gulland}).  
+While by definition such events are rare in any one system, a cursory review of the literature reveals that these types of fluctuations occur with some regularity in fisheries throughout the world (\eg, see~\cite{fisch-etal-2019,licandeo-etal-2020}).  
+For example, while better fisheries management practices helped rebuild Northeast Atlantic fish stocks, it appears that of the stocks that displayed the strongest recoveries, record large year classes occurred at low abundance that drove stock productivity upward and out of low, collapsed states (see~\cite{zimmermann2019improved}).  
+Similarly, Atlantic Redfish Sebastes fasciatus stocks off the eastern coast of Canada exhibit spasmodic recruitment fluctuations that make the application of standard stock assessment techniques and MSE challenging~\cite{licandeo-etal-2020}.  
+In inland systems, Walleye Sander vitreus in Lake Erie increased from low abundance due to a large recruitment event in 2003, and this cohort has continued to support the bulk of one of most economically valuable recreational fisheries in the world for nearly a decade~\cite{schmitt-vandergoot}.  
+In each of these examples, large recruitment events had marked effects on both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see~\cite{punt2014, myers1998}).  
 	
-Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though such policies are now considered the de facto standard for managing fisheries exploitation worldwide (\cite{silvar-viladomiu,free-etal-2022}; however see \cite{licandeo-etal-2020}).
-This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (\cite{walters1975optimal,walters-hilborn-1978,reed1979optimal}; however see \cite{parma1990experimental,hawkshaw2015harvest}). 
+Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though such policies are now considered the de facto standard for managing fisheries exploitation worldwide (\cite{silvar-viladomiu,free-etal-2023}; however see~\cite{licandeo-etal-2020}).
+This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (\cite{walters1975optimal,walters-hilborn-1978,reed1979optimal}; however see~\cite{parma1990experimental,hawkshaw2015harvest}). 
 In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a).  
 Specifically, we use these tools to explore whether multi-dimensional control rules—particularly rules depending on the total stock biomass and the mean fish weight—can be helpful for managing age-structured, spasmodic recruiting, populations. 
-We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see \cite{sullivan2003}), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies \cite{post-etal-2002,cahill2022}. 
-We compare the policies obtained by numerical optimization with a rectilinear precautionary rule recommended by Canada \cite{dfo2006}.  
+We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see~\cite{sullivan2003}), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies~\cite{post-etal-2002,cahill2022}. 
+We compare the policies obtained by numerical optimization with a rectilinear precautionary rule recommended by Canada~\cite{dfo2006}.  
 
 We evaluate HCRs with three types of utility functions: total harvest (yield maximizing), a risk-averse utility that prioritizes interannual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
-We optimize and evaluate four kinds of HCRs: 1) constant fishing mortality (\textfmsy), 2) a rectilinear precautionary rule derived from \textfmsy and $\bmsy$ (see \cite{dfo2006}, Fig 1) for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
+We optimize and evaluate four kinds of HCRs: 1) constant fishing mortality (\textfmsy), 2) a rectilinear precautionary rule derived from \textfmsy and $\bmsy$ (see~\cite{dfo2006}, Fig 1) for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
 
 Our findings are that:
 \begin{enumerate}
@@ -157,7 +157,7 @@ This, however, was not the case.
 
 Result 4., in contrast to Result 3., shows that for utility functions with a strong dependence on size-structure, additional size-structure observations can allow for a better performance. 
 Moreover, it demonstrates that RL can be a useful tool for optimizing HCRs when no good candidate for the functional form of the HCR is known a priori. 
-The policy obtained by RL uses the combined information provided by the stock biomass and mean weight observations to more accurately time harvest pulses. Such pulse harvesting strategies have been shown to be optimal in other fishery scenarios \cite{botsford1981,darocha2013}.
+The policy obtained by RL uses the combined information provided by the stock biomass and mean weight observations to more accurately time harvest pulses. Such pulse harvesting strategies have been shown to be optimal in other fishery scenarios~\cite{botsford1981,darocha2013}.
 
 %
 %
@@ -166,15 +166,15 @@ The policy obtained by RL uses the combined information provided by the stock bi
 
 A collection of 15-30 walleye lakes in Alberta are managed using a Special Harvest License (SHL), which enables managers to assign a Total Allowable Catch (TAC) to limit harvest, and which is unique for inland recreational fisheries in North America.  
 Presently, managers use an indicator-based approach to set TACs in any particular year based on standardized gill-netting surveys which occur in fall.  
-However, \cite{cahill2022} showed that harvestable surplus existed in many systems even though many management plans stated the goal of seeking to harvest  for maximum sustainable yield.  
+However,~\cite{cahill2022} showed that harvestable surplus existed in many systems even though many management plans stated the goal of seeking to harvest  for maximum sustainable yield.  
 Consequently, we seek to improve the scientific defensibility of this TAC allocation process in the Alberta SHL walleye program. 
-To do so, we extended a standard age-structured population dynamics model of walleye described in detail in \cite{cahill2022} and use it to simulate realistic population dynamics.  
-Briefly, we model population processes such growth in numbers at age through time as a function of Beverton-Holt stock-recruitment (see below), von Bertalanffy somatic growth in length-at-age (see \cite{cahill2020spatial}), and total mortality as an additive process assuming total instantaneous mortality Z is equal to instantaneous natural mortality M plus fishing mortality rates imposed by recreational harvesters and which is modulated by vulnerability at age.  
-Unless stated otherwise parameter values for all relationships are drawn from average values estimated in \cite{cahill2020spatial}.
+To do so, we extended a standard age-structured population dynamics model of walleye described in detail in~\cite{cahill2022} and use it to simulate realistic population dynamics.  
+Briefly, we model population processes such growth in numbers at age through time as a function of Beverton-Holt stock-recruitment (see below), von Bertalanffy somatic growth in length-at-age (see~\cite{cahill2020spatial}), and total mortality as an additive process assuming total instantaneous mortality Z is equal to instantaneous natural mortality M plus fishing mortality rates imposed by recreational harvesters and which is modulated by vulnerability at age.  
+Unless stated otherwise parameter values for all relationships are drawn from average values estimated in~\cite{cahill2020spatial}.
 
 \subsection{Population dynamics}
 
-A key finding of \cite{cahill2022} was that recruitment dynamics were highly variable and/or spasmodic (see also \cite{caddy-gulland}). 
+A key finding of~\cite{cahill2022} was that recruitment dynamics were highly variable and/or spasmodic (see also~\cite{caddy-gulland}). 
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(B_1, ... ,B_{20})$. 
 Recruitment is modeled via the Beverton-Holt equation,
 \begin{align*}
@@ -184,8 +184,8 @@ Recruitment is modeled via the Beverton-Holt equation,
 \end{align*}
 Here, $H_{t,a}$ is the harvested biomass of fish in age class $a$, $\ssb_t$ is the spawning stock biomass (\cite{cahill2022}, Eq. 8), $\alpha$ and $\beta$ are describing juvenile survival as a function of $\ssb_t$ , and $r_t$ is a random variable used to modulate recruitment from the standard Beverton-Holt model to account for highly variable and spasmodic stochastic recruitment dynamics. 
 We model $r_t$ as a Bernoulli random trial with $\text{Pr}=0.025$, and when this trial is “successful” we subsequently sample rt from a uniform distribution ranging from 10 to 30. 
-Phrased differently, when the Bernoulli trial for a given year is successful we multiply the Beverton-Holt recruitment prediction by a random factor of 10-30 in accordance with the types of recruitment dynamics documented in \cite{cahill2022}. 
-When the Bernoulli trial is “unsuccessful,” on the other hand, we sample $r_t$ from a standard log-normal distribution like those commonly used to simulate variable recruitment (e.g., see \cite{quinn-deriso}).
+Phrased differently, when the Bernoulli trial for a given year is successful we multiply the Beverton-Holt recruitment prediction by a random factor of 10-30 in accordance with the types of recruitment dynamics documented in~\cite{cahill2022}. 
+When the Bernoulli trial is “unsuccessful,” on the other hand, we sample $r_t$ from a standard log-normal distribution like those commonly used to simulate variable recruitment (e.g., see~\cite{quinn-deriso}).
 
 The harvested biomass was calculated as
 \begin{align*}
@@ -196,7 +196,7 @@ where $F_t$ is the instantaneous  fishing mortality and $\vharv(a)$ vulnerabilit
     \vharv(a) = \frac1{1 + \exp(-(a-a_{hv})/a_sl)},
 \end{align}
 with $a_{hv}=5$, and $a_{sl}=0.5$. 
-Notice that even for a high net fishing mortality rate, e.g. $F=1$, the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries settings (e.g., see \cite{golden2022focusing}).
+Notice that even for a high net fishing mortality rate, e.g. $F=1$, the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries settings (e.g., see~\cite{golden2022focusing}).
 
 Simulations were run for 1000 time-steps in a heuristic attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
 Specifically, the expected number of large year classes (ie. ‘‘successful’’ Bernoulli trials for $r_t$ ) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
@@ -223,9 +223,9 @@ where $\nsurv$ is the number of fish observed in the survey,
 and where $w_a$ is the average weight at age $a$.
 Mean weight is easy for managers to observe and is important to consider in the context of spasmodically recruiting populations, since large recruitment events are correlated with dips in the mean weight of fish in the population.
 
-Here we emphasize that the system is thus only partially observed \cite{memarzadeh2019}-–-while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, the manager observes only a two-dimensional summary statistics (i.e. mean biomass, total biomass via standard monitoring surveys). 
+Here we emphasize that the system is thus only partially observed~\cite{memarzadeh2019}-–-while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, the manager observes only a two-dimensional summary statistics (i.e. mean biomass, total biomass via standard monitoring surveys). 
 It is worth noting that while the model dynamics are Markovian in the full state space, the dynamics of these two observed states are not, making this a so-called Partially Observed Markov Decision Process, or POMDP.  
-This mathematical inconvenience significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, historically, the analysis of ecological POMDP problems has been restricted to much smaller models  (e.g., see \cite{williams2022}).
+This mathematical inconvenience significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, historically, the analysis of ecological POMDP problems has been restricted to much smaller models  (e.g., see~\cite{williams2022}).
 
 \subsection{Utility models}
 
@@ -250,11 +250,54 @@ This way, stable harvests are preferred, and occasional large harvests contribut
 \end{align}
 In our results we use $a_{tr.}=10$.
 
-We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also \cite{walters-parma-1996,collie2021}).  
+We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also~\cite{walters-parma-1996,collie2021}).  
 Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
-Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers desire large trophy-sized fish rather than valuing fish of any size equally (e.g., see \cite{murphy-willis-book})
+Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers desire large trophy-sized fish rather than valuing fish of any size equally (e.g., see~\cite{murphy-willis-book}).
 
 \subsection{Harvest control strategies}
+
+Here we describe the classes of harvest control rules that we optimize and evaluate.
+
+\textbf{FMSY.} 
+In this strategy, the agent applies the same fishing mortality F for every timestep. 
+(The name comes from \emph{maximum sustainable yield}, since in the case that utility is total harvest, the optimal value \textfmsy is the constant fishing mortality that leads to the highest long-term yield on average \cite{hilborn-walters-1992}.)
+
+\textbf{Precautionary Policy.}
+A piece-wise linear HCR determined by three parameters: 
+two stock biomass reference points $x_1$, $x_2$  and the fishing mortality at high stock biomass,  $y_2$ . 
+The HCR is given by the following equations:
+\begin{alignat*}{2}
+    F_t &= 0, \quad && \text{if } \bsurv(t) < x_1,\\
+    F_t &= y_2 \left(\frac{\bsurv(t) - x_1}{x_2 - x_1}\right), \quad && \text{if } x_1 \leq \bsurv(t) \leq x_2, \numberthis\\
+    F_t &= y_2, \quad && \text{if } \bsurv(t) > x_2.
+\end{alignat*}
+For a visual guide of this policy, see \cite[Fig.~1]{dfo2006}. 
+In the literature, the parameters of this policy are fixed using the biomass at which the fishery maximizes average production, $\bmsy$, as a reference point. 
+A common choice is $x_1=0.4 \bmsy$, $x_2=0.8 \bmsy$ and $y_2=\fmsy$. 
+We call this specific realization of the HCR the \emph{constrained precautionary policy} (cPP). 
+In contrast, when we refer to the precautionary policy whose parameters $x_1$, $x_2$, $y_2$ have been numerically optimized as the \emph{optimized precautionary policy} (oPP). 
+We evaluate both of these HCRs.
+
+We collectively refer to the three policy types described above as \emph{fixed policies}, in the sense that their functional form is fixed \emph{a priori}, before the optimization begins. 
+The process of optimizing these fixed policies is loosely inspired by MSE, where several competing policies are evaluated using dynamic simulations \cite{punt-mse}.
+
+\textbf{Reinforcement learning policy.} 
+This type of policy uses a neural network to express the harvest control rule. 
+We explore two cases: one where only the stock biomass observation is used, and one where an additional mean weight observation is used. 
+Mathematically,
+\begin{align}
+    F_t = f_\theta(\obs_t)
+\end{align}
+where $f_\theta$ is a neural network with parameters $\theta$, and $\obs_t$ represent survey observations collected at time-step $t$. 
+
+The neural network used was a 3-layer feed-forward network with layers of size 64, 32, 16. 
+We chose this network structure by the following argument. 
+First, 3-layer neural networks are known to be good approximators for piecewise linear functions~\cite{liang2016deep}—--thus the network would in principle be able to converge to the precautionary policy if it were optimal. 
+Moreover, by trial-and-error, we noticed that decreasing subsequent layer sizes seemed to improve training. 
+Finally, we deliberately chose relatively small layer sizes to reduce training time.\footnote{
+As a comparison point, the default network structure used by \emph{stable baselines 3}, the Python package we used for RL computations, has two layers of 64 neurons each.
+}
+We emphasize, however, that all these choices on network structure were heuristic and not principled.
 
 \subsection{Bayesian optimization of fixed policy controls}
 
@@ -278,7 +321,7 @@ Size dependence can be particularly relevant in cases where machinery to process
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\bibliographystyle{apalike} 
+\bibliographystyle{unsrt} 
 \bibliography{fishery_refs}
 
 
