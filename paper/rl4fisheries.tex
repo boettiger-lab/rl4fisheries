@@ -331,6 +331,42 @@ Found in \url{https://github.com/boettiger-lab/rl4fisheries/tree/main/notebooks}
 
 \subsection{Harvest control via neural network: reinforcement learning optimization}
 
+Here we give a small overview of the RL methods we used to optimize neural network policies. 
+For a broader introduction to RL, its methods, and applications in quantitative ecology, see~\cite{lapeyrolerie-rl}.
+
+Reinforcement learning is a class of strategies to approach \emph{sequential decision problems} in which a simulated \emph{‘‘agent’’} interacts with a simulated \emph{‘‘environment’’}. 
+The agent here represents the decision-maker, who observes and acts on the environment. 
+In the context of our paper, the environment is an age-structured model of the fish population, while the agent is a manager tasked with making a quota decision each year. 
+In RL, the agent can be restricted to only observe partial information about the state of the environment. 
+Here we consider observations of the total stock biomass and the mean fish weight.
+
+The simulation is broken down into time-steps. 
+At the beginning of each time-step, the agent prescribes an action that it applies to the environment. 
+Subsequently, the environment changes its internal state due to this action, and outputs an observation and a reward back to the agent. 
+The observation is used by the agent to take the next action. A visualization of this is shown in \cite[Fig.~1]{lapeyrolerie-rl}.
+
+In the classic example of an Atari video-games, the agent fills in the role of the person playing the game, while the environment is the game itself.\footnote{
+Atari video-game environments have established themselves as a benchmark with which to test RL algorithms. For more information on these environments, see \url{https://gymnasium.farama.org/environments/atari/}.
+}
+In the context of this work, one can think of the manager prescribing a TAC as the RL agent making decisions given some partially observable fish population (or environment).
+
+We call \emph{training} the process by which the agent optimizes the values of the neural network weights $\theta$ (i.e., the process by which the RL algorithm optimizes the HCR). 
+During training, the agent collects data on time-step interactions with the environment, slowly learning which actions to avoid given an observation, and which actions to encourage. 
+This is done, in broad terms, using a variation of \emph{stochastic gradient descent}, which takes advantage of the fact that gradients can be efficiently computed on neural networks by using the technique of \emph{back propagation} (for an introduction to back propagation, see, e.g.,~\cite[Chapter~7]{rojas1996}.
+
+A variety of algorithms exist for training RL agents, each with its strengths and drawbacks.
+ Here we focus on the \emph{Proximal Policy Optimization} algorithm (PPO), which has been shown to perform well over a broad set of benchmark environments~\cite{schulman-ppo}. 
+ It moreover has also been shown to have a strong performance in problems related to population dynamics~\cite{lapeyrolerie-rl,prettydarngood}.\footnote{
+ We tested certain other RL algorithms, such as the \emph{Truncated Quantile Critics} (TQC) algorithm, as well. 
+ However, we found it hard to match the performance of PPO. 
+ Because of this, we do not include the analysis of policies obtained with these other algorithms here. 
+ The companion source code allows the user to easily reproduce our analysis for PPO and other RL algorithms.
+ }
+
+ As mentioned, the neural networks we use in our results are rather modest in size—with only a few thousand parameters. 
+ The training times were also modest, comprising 6 million time-steps, or a bit under two hours of training on a commercial GPU.
+
+
 \subsection{Policy evaluation}
 
 
