@@ -174,6 +174,8 @@ To do so, we extended a standard age-structured population dynamics model of wal
 Briefly, we model population processes such growth in numbers at age through time as a function of Beverton-Holt stock-recruitment (see below), von Bertalanffy somatic growth in length-at-age (see \cite{cahill2020spatial}), and total mortality as an additive process assuming total instantaneous mortality Z is equal to instantaneous natural mortality M plus fishing mortality rates imposed by recreational harvesters and which is modulated by vulnerability at age.  
 Unless stated otherwise parameter values for all relationships are drawn from average values estimated in \cite{cahill2020spatial}.
 
+\subsection{Population dynamics}
+
 A key finding of \cite{cahill2022} was that recruitment dynamics were highly variable and/or spasmodic (see also \cite{caddy-gulland}). 
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(B_1, ... ,B_{20})$. 
 Recruitment is modeled via the Beverton-Holt equation,
@@ -187,7 +189,20 @@ We model $r_t$ as a Bernoulli random trial with $\text{Pr}=0.025$, and when this
 Phrased differently, when the Bernoulli trial for a given year is successful we multiply the Beverton-Holt recruitment prediction by a random factor of 10-30 in accordance with the types of recruitment dynamics documented in \cite{cahill2022}. 
 When the Bernoulli trial is “unsuccessful,” on the other hand, we sample $r_t$ from a standard log-normal distribution like those commonly used to simulate variable recruitment (e.g., see \cite{quinn-deriso}).
 
-\subsection{Population dynamics}
+The harvested biomass was calculated as
+\begin{align*}
+    H_{t,a} = B_a(t) F_t \vharv(a),
+\end{align*}
+where $F_t$ is the instantaneous  fishing mortality and $\vharv(a)$ vulnerability-at-age to harvest and was calculated as
+\begin{align}
+    \vharv(a) = \frac1{1 + \exp(-(a-a_{hv})/a_sl)},
+\end{align}
+with $a_{hv}=5$, and $a_{sl}=0.5$. 
+Notice that even for a high net fishing mortality rate, e.g. $F=1$, the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries settings (e.g., see \cite{golden2022focusing}).
+
+Simulations were run for 1000 time-steps in a heuristic attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
+Specifically, the expected number of large year classes (ie. ‘‘successful’’ Bernoulli trials for $r_t$ ) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
+Using the nomenclature from the RL literature, these 1000-timestep simulations are called \emph{episodes}.
 
 \subsection{Observations}
 
