@@ -231,6 +231,31 @@ This mathematical inconvenience significantly increases the technical difficulty
 
 \subsection{Utility models}
 
+We consider three utility models. 
+1. Total harvest utility: the utility at a timestep t is given by
+\begin{align}
+    U_t = \sum_{a=1}^{20} H_{a,t}
+\end{align}
+where $H_{a,t}$ is the biomass of size-class a harvested during timestep $t$. 
+2. Risk averse utility: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’), 
+\begin{align}
+    U_t = \left(
+    	\sum_{a=1}^{20} H_{a,t}
+    \right)^\gamma,
+\end{align}
+where $\gamma=0.6$ parametrizes the risk-aversion. 
+We note that this is similar to using the natural log of catches as is commonly done in MSE, where the specific risk aversion $\gamma$ is set to a clear value for clarity, and we note that this parameterization converges on total harvest utility as $\gamma\to1$.  
+This way, stable harvests are preferred, and occasional large harvests contribute proportionally less to the utility. 
+3. Trophy fishing utility: here, harvested fish only contribute to the utility if they are above a certain size (age) class, $a > a_{tr.}$,
+\begin{align}
+    U_t = \sum_{a=a_{tr.}}^{20} H_{a,t}.
+\end{align}
+In our results we use $a_{tr.}=10$.
+
+We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also \cite{walters-parma-1996,collie2021}).  
+Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
+Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers desire large trophy-sized fish rather than valuing fish of any size equally (e.g., see \cite{murphy-willis-book})
+
 \subsection{Harvest control strategies}
 
 \subsection{Bayesian optimization of fixed policy controls}
