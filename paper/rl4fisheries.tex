@@ -109,61 +109,64 @@ Quantitative Fisheries Center, Department of Fisheries and Wildlife, Michigan St
 Over the past two decades a wealth of literature has emerged that is aimed at solving sequential decision problems in diverse fields such as engineering, robotics, and control theory.  
 This work, collectively referred to as Reinforcement Learning (RL), has now advanced to the level needed to outperform human experts in many fields~\cite{sutton-rl,bertsekas-rl}.  
 For example, the application of RL has revolutionized games like chess, where the world’s top chess engines now almost always defeat the greatest chess players in the world. 
-Beyond simply outperforming experts, RL offers a fresh perspective on previously unsolvable problems—and in the case of chess, top players now incorporate strategies discovered by engines into their own repertoires that were once considered nonsensical by humans. 
+Beyond outperforming experts, RL offers a fresh perspective on previously unsolvable problems—and in the case of chess, top players now incorporate strategies discovered by engines into their repertoires that were once considered nonsensical by humans. 
 Lessons like these seem relevant to fisheries scientists, as a number of sustainability problems lie at the intersection of age-structured population dynamics and sequential decision making under uncertainty~\cite{walters-hilborn-1978}, and for which methods like dynamic programming or analytical approaches break down due to computational costs or scalability issues related to the “curse of dimensionality.”  
-It is in these complex decision-making contexts that RL shows much promise, and might serve as a useful guide for improving our collective intuition surrounding the design of feedback policies.
+It is in these complex decision-making contexts that RL shows promise, and could serve as a useful guide for improving our collective intuition surrounding the design of feedback policies.
 
 In the absence of tractable analytical or dynamic programming solutions to feedback policy design in fisheries, simulation-based approaches like Management Strategy Evaluation (MSE) have emerged to evaluate trade-offs among alternative feedback policies or harvest control rules~\cite{punt-mse}.
 In an MSE, analysts first specify policies to test a priori, and only after the specification of a policy set is simulation then used to quantify the relative performance of those policies against explicit objective(s).
-While extensive application of the MSE approach has proved it to be a useful tool for informing harvest policy (\eg,~\cite{edwards2016-mse}), it remains fundamentally limited to select among the a priori policy set chosen by analysts.  
+While extensive application of the MSE approach has proved it as a useful tool for informing harvest policy (\eg,~\cite{edwards2016-mse}), it remains fundamentally limited to select among the a priori policy set chosen by analysts.  
 Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (\eg, see~\cite{dfo2006}), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested.  
 In the context of feedback policy design this may be problematic, because feedback policy design is notoriously difficult, often counterintuitive, and because analysts typically limit themselves to 1-dimensional control rules based on stock biomass. 
 	
-The dynamics  of an age-structured population occurs in  high dimensional spaces, and thus in some situations it is possible for different states to correspond to the same total stock biomass.  
-For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. Not surprisingly, managers might prescribe different management actions  in  these different contexts (see similar arguments in~\cite{hilborn2002}). 
-This dimensionality problem makes it difficult  to specify policies to test a priori. 
-While age-structure makes it difficult to specify good policies a priori, it also implies that  managers have access to more information than total biomass in many real-world situations. 
-For instance, knowing the mean fish weight in addition to total stock biomass can help the manager distinguish between a population with many small fish and one with a population biased towards large fish. 
+The dynamics  of an age-structured population occur in  high dimensional spaces, and thus in some situations it is possible for different states to correspond to the same total stock biomass.  
+For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. 
+Not surprisingly, managers might prescribe different management actions  in  these different contexts (see similar arguments in~\cite{hilborn2002}). 
+Intuitively, a dimensionality problem makes it difficult  to specify policies to test a priori. 
+While complexity due to age-structure makes it difficult to specify effective policies a priori, it also implies that  managers have access to more information than total biomass in some situations and which might be useful for informing harvesting decisions. 
+For instance, knowing the mean fish weight in addition to total stock biomass might help the manager distinguish between a population with many small fish and one with a population composed of mainly large fish. 
 	
-Fish populations with highly variable recruitment are some of the most perplexing systems to learn from and thus in which to inform fisheries management~\cite{hjort1914,caddy-gulland}, and thus might serve as a useful test case in which to explore the utility of RL for improving feedback policy design.  
-In this paper we define highly variable recruitment to mean that a fish population exhibits infrequent large year classes of at least 10-50 times the long-term average recruitment level (see~\cite{caddy-gulland}).  
+Fish populations with highly variable recruitment are some of the most perplexing systems to learn from and in which to inform fisheries management~\cite{hjort1914,caddy-gulland}, and thus serve as a useful test case in which to explore the utility of RL methodologies for improving feedback policy design.  
+In this paper we define highly variable or spasmodic recruitment to mean that a fish population exhibits infrequent large year classes of at least 10-50 times the long-term average recruitment level (see~\cite{caddy-gulland}).  
 While by definition such events are rare in any one system, a cursory review of the literature reveals that these types of fluctuations occur with some regularity in fisheries throughout the world (\eg, see~\cite{fisch-etal-2019,licandeo-etal-2020}).  
 For example, while better fisheries management practices helped rebuild Northeast Atlantic fish stocks, it appears that of the stocks that displayed the strongest recoveries, record large year classes occurred at low abundance that drove stock productivity upward and out of low, collapsed states (see~\cite{zimmermann2019improved}).  
 Similarly, Atlantic Redfish Sebastes fasciatus stocks off the eastern coast of Canada exhibit spasmodic recruitment fluctuations that make the application of standard stock assessment techniques and MSE challenging~\cite{licandeo-etal-2020}.  
 In inland systems, Walleye Sander vitreus in Lake Erie increased from low abundance due to a large recruitment event in 2003, and this cohort has continued to support the bulk of one of most economically valuable recreational fisheries in the world for nearly a decade~\cite{schmitt-vandergoot}.  
-In each of these examples, large recruitment events had marked effects on both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see~\cite{punt2014, myers1998}).  
+In these examples, large recruitment events affected both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see~\cite{punt2014, myers1998}).  
 	
-Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though such policies are now considered the de facto standard for managing fisheries exploitation worldwide (\cite{silvar-viladomiu,free-etal-2023}; however see~\cite{licandeo-etal-2020}).
+Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though feedback policies are now considered the de facto standard for managing fisheries exploitation worldwide (\cite{silvar-viladomiu,free-etal-2023}; however see~\cite{licandeo-etal-2020}).
 This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (\cite{walters1975optimal,walters-hilborn-1978,reed1979optimal}; however see~\cite{parma1990experimental,hawkshaw2015harvest}). 
 In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a).  
-Specifically, we use these tools to explore whether multi-dimensional control rules—particularly rules depending on the total stock biomass and the mean fish weight—can be helpful for managing age-structured, spasmodic recruiting, populations. 
+Specifically, we use RL methodologies to explore whether multi-dimensional control rules--—particularly rules depending on the total stock biomass and the mean fish weight--might be helpful for managing age-structured, spasmodically recruiting, populations. 
 We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see~\cite{sullivan2003}), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies~\cite{post-etal-2002,cahill2022}. 
-We compare the policies obtained by numerical optimization with a rectilinear precautionary rule recommended by Canada~\cite{dfo2006}.  
+We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada~\cite{dfo2006}.  
 
-We evaluate HCRs with three types of utility functions: total harvest (yield maximizing), a risk-averse utility that prioritizes interannual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
-We optimize and evaluate four kinds of HCRs: 1) constant fishing mortality (\textfmsy), 2) a rectilinear precautionary rule derived from \textfmsy and $\bmsy$ (see~\cite{dfo2006}, Fig 1) for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
+We evaluate HCRs with three types of utility functions: total harvest (\ie, yield maximizing), a risk-averse utility that prioritizes interannual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
+We optimize and evaluate four classes of HCRs: 1) constant fishing mortality rate (\textfmsy), 2) a rectilinear precautionary rule derived from \textfmsy and the biomass at which surplus production is maximized $\bmsy$ (see~\cite{dfo2006}, Fig 1) for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
 
 Our findings are that:
 \begin{enumerate}
 \item With respect to total harvest, optimizing HCRs in classes 3 and 4 lead to considerable improvements over the simpler HCRs of classes 1 and 2. Here, in particular, the unconstrained rectilinear rule (HCR class 3) performed better than all other policies tested.
 \item With respect to the risk averse utility, we observed a low performance of the constrained rectilinear policy (HCR class 2), while other HCR classes showed performances similar to each other.
-\item With respect to both total harvest and the risk averse utility, our RL optimization indicates that the additional mean weight observation adds little value to the HCR, and in fact seems to hamper the RL algorithm convergence. 
+\item With respect to both total harvest and risk averse utility, our RL optimization indicates that the additional mean weight observation adds little value to the HCR, and in fact seems to hamper the RL algorithm convergence. 
 \item With respect to the trophy utility function, the RL algorithm is able to advantageously use the additional mean weight observation, leading to considerably higher utility than all other HCRs we tested. 
 \end{enumerate}
 
-With respect to the trophy utility function, the RL algorithm is able to advantageously use the additional mean weight observation, leading to considerably higher utility than all other HCRs we tested. 
-Through optimization we found policies that performed better than both \textfmsy and the DFO-recommended rectilinear rule. 
-Second, that the \textfmsy control rule performs well with respect to the risk-averse utility—in this case, that control rule performed on par with the much more complicated HCR classes 3 and 4. 
+Results 1. and 2. were aligned with our previous expectations: 
+First, that there can be noticeable increases of total harvest by optimizing over more complex classes of control rules (HCR classes 3 and 4).
+Through optimization we found policies that performed better than both constant \textfmsy and the DFO-recommended rectilinear rule. 
+Additionally, we found that the \textfmsy control rule performs well with respect to the risk-averse utility—in this case, that control rule performed on par with the much more complicated HCR classes 3 and 4. 
 
 Result 3. was rather surprising. 
 Because of the complex stochasticity patterns in the model we considered, and because of the high dimensionality of our system, analytical optimality results used to inform simple HCR functional forms do not hold. 
-We expected that because of this complexity, policies optimized over high-dimensional and expressive spaces would lead to improvements with respect to simple policies informed by analytical results on one-dimensional systems. 
+We expected that because of this complexity, policies optimized over high-dimensional and more expressive spaces would lead to improvements with respect to simple policies informed by analytical results on one-dimensional systems. 
 Moreover, we expected that an additional observation on the size-structure of the population would yield valuable information for policy decisions. 
 This, however, was not the case.
 
-Result 4., in contrast to Result 3., shows that for utility functions with a strong dependence on size-structure, additional size-structure observations can allow for a better performance. 
+Result 4., in contrast to Result 3., shows that for highly non-linear utility functions with a strong dependence on size-structure, additional size-structure observations can allow for a better performance. 
 Moreover, it demonstrates that RL can be a useful tool for optimizing HCRs when no good candidate for the functional form of the HCR is known a priori. 
-The policy obtained by RL uses the combined information provided by the stock biomass and mean weight observations to more accurately time harvest pulses. Such pulse harvesting strategies have been shown to be optimal in other fishery scenarios~\cite{botsford1981,darocha2013}.
+The policy obtained by RL uses the combined information provided by the stock biomass and mean weight observations to more accurately time harvest in relation to pulses. 
+Such pulse harvesting strategies have been shown to be optimal in other fishery scenarios~\cite{botsford1981,darocha2013}.
 
 %
 %
