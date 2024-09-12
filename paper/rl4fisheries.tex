@@ -88,7 +88,7 @@ Quantitative Fisheries Center, Department of Fisheries and Wildlife, Michigan St
 \date{\today}
 
 \begin{abstract}
-	In fishery science, harvest management of size-structured stochastic populations is a long-standing and  difficult problem. Rectilinear precautionary policies based on biomass and harvesting reference points have now become a standard approach to this problem. However, these policies are ultimately based on the theory of maximum sustainable yield and are theoretically grounded on the assumption that surplus production is stable in the fishery. This paradigm is challenged in fisheries with highly variable, spasmodic, recruitment. In this paper we explore the problem of designing harvest control rules for partially observed, age-structured, spasmodic fish populations using tools from reinforcement learning (RL) and Bayesian optimization. Our focus is on the case of Walleye fisheries in Alberta, Canada, whose highly variable recruitment dynamics have perplexed managers and ecologists. We optimized and evaluated policies using several complementary performance metrics. The main questions we addressed were: 1. How do standard policies based on reference points perform relative to numerically optimized policies? 2. Can an observation of mean fish weight, in addition to stock biomass, aid policy decisions? 
+	In fishery science, harvest management of size-structured stochastic populations is a long-standing and  difficult problem. Rectilinear precautionary policies based on biomass and harvesting reference points have now become a standard approach to this problem. While these standard feedback policies are adapted from analytical or dynamic programming solutions assuming relatively simple ecological dynamics, they are often applied to more complicated ecological settings in the real world.. In this paper we explore the problem of designing harvest control rules for partially observed, age-structured, spasmodic fish populations using tools from reinforcement learning (RL) and Bayesian optimization. Our focus is on the case of Walleye fisheries in Alberta, Canada, whose highly variable recruitment dynamics have perplexed managers and ecologists. We optimized and evaluated policies using several complementary performance metrics. The main questions we addressed were: 1. How do standard policies based on reference points perform relative to numerically optimized policies? 2. Can an observation of mean fish weight, in addition to stock biomass, aid policy decisions? 
 \end{abstract}
 
 \maketitle
@@ -104,6 +104,7 @@ Quantitative Fisheries Center, Department of Fisheries and Wildlife, Michigan St
 %
 %
 \section{Introduction}
+\label{sec:intro}
 
 Over the past two decades a wealth of literature has emerged that is aimed at solving sequential decision problems in diverse fields such as engineering, robotics, and control theory.  
 This work, collectively referred to as Reinforcement Learning (RL), has now advanced to the level needed to outperform human experts in many fields~\cite{sutton-rl,bertsekas-rl}.  
@@ -168,6 +169,7 @@ The policy obtained by RL uses the combined information provided by the stock bi
 %
 %
 \section{Methods}
+\label{sec:methods}
 
 A collection of 15-30 walleye lakes in Alberta are managed using a Special Harvest License (SHL), which enables managers to assign a Total Allowable Catch (TAC) to limit harvest, and which is unique for inland recreational fisheries in North America.  
 Presently, managers use an indicator-based approach to set TACs in any particular year based on standardized gill-netting surveys which occur in fall.  
@@ -178,6 +180,7 @@ Briefly, we model population processes such growth in numbers at age through tim
 Unless stated otherwise parameter values for all relationships are drawn from average values estimated in~\cite{cahill2020spatial}.
 
 \subsection{Population dynamics}
+\label{sec:popdyn}
 
 A key finding of~\cite{cahill2022} was that recruitment dynamics were highly variable and/or spasmodic (see also~\cite{caddy-gulland}). 
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(B_1, ... ,B_{20})$. 
@@ -208,6 +211,7 @@ Specifically, the expected number of large year classes (ie. ‘‘successful’
 Using the nomenclature from the RL literature, these 1000-timestep simulations are called \emph{episodes}.
 
 \subsection{Observations}
+\label{sec:obs}
 
 We model observations by simulating a survey carried out by a management agency tasked with managing the fishery. 
 These observations are subsequently used by the HCR to set a fishing mortality for a specific  time-step. 
@@ -233,6 +237,7 @@ It is worth noting that while the model dynamics are Markovian in the full state
 This mathematical inconvenience significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, historically, the analysis of ecological POMDP problems has been restricted to much smaller models  (e.g., see~\cite{williams2022}).
 
 \subsection{Utility models}
+\label{sec:utility}
 
 We consider three utility models. 
 1. Total harvest utility: the utility at a timestep t is given by
@@ -260,6 +265,7 @@ Moreover we included the trophy fishing function to explore how our analysis wou
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers desire large trophy-sized fish rather than valuing fish of any size equally (e.g., see~\cite{murphy-willis-book}).
 
 \subsection{Harvest control strategies}
+\label{sec:strategies}
 
 Here we describe the classes of harvest control rules that we optimize and evaluate.
 
@@ -305,6 +311,7 @@ As a comparison point, the default network structure used by \emph{stable baseli
 We emphasize, however, that all these choices on network structure were heuristic and not principled.
 
 \subsection{Bayesian optimization of fixed policy controls}
+\label{sec:bayesian}
 
 We used the framework of Bayesian optimization in order to find optimal parameters for the fixed policy HCRs. 
 A general introduction to this type of algorithm may be found on~\cite{frazier2018bayesian,head-skopt}. 
@@ -335,6 +342,7 @@ Found in \url{https://github.com/boettiger-lab/rl4fisheries/tree/main/notebooks}
 }
 
 \subsection{Harvest control via neural network: reinforcement learning optimization}
+\label{sec:rl}
 
 Here we give a small overview of the RL methods we used to optimize neural network policies. 
 For a broader introduction to RL, its methods, and applications in quantitative ecology, see~\cite{lapeyrolerie-rl}.
@@ -360,23 +368,32 @@ During training, the agent collects data on time-step interactions with the envi
 This is done, in broad terms, using a variation of \emph{stochastic gradient descent}, which takes advantage of the fact that gradients can be efficiently computed on neural networks by using the technique of \emph{back propagation} (for an introduction to back propagation, see, e.g.,~\cite[Chapter~7]{rojas1996}.
 
 A variety of algorithms exist for training RL agents, each with its strengths and drawbacks.
- Here we focus on the \emph{Proximal Policy Optimization} algorithm (PPO), which has been shown to perform well over a broad set of benchmark environments~\cite{schulman-ppo}. 
- It moreover has also been shown to have a strong performance in problems related to population dynamics~\cite{lapeyrolerie-rl,prettydarngood}.\footnote{
+Here we focus on the \emph{Proximal Policy Optimization} algorithm (PPO), which has been shown to perform well over a broad set of benchmark environments~\cite{schulman-ppo}. 
+It moreover has also been shown to have a strong performance in problems related to population dynamics~\cite{lapeyrolerie-rl,prettydarngood}.\footnote{
  We tested certain other RL algorithms, such as the \emph{Truncated Quantile Critics} (TQC) algorithm, as well. 
  However, we found it hard to match the performance of PPO. 
  Because of this, we do not include the analysis of policies obtained with these other algorithms here. 
  The companion source code allows the user to easily reproduce our analysis for PPO and other RL algorithms.
- }
+}
 
- As mentioned, the neural networks we use in our results are rather modest in size—with only a few thousand parameters. 
- The training times were also modest, comprising 6 million time-steps, or a bit under two hours of training on a commercial GPU.
+As mentioned, the neural networks we use in our results are rather modest in size—with only a few thousand parameters. 
+The training times were also modest, comprising 6 million time-steps, or a bit under two hours of training on a commercial GPU.
 
 
 \subsection{Policy evaluation}
+\label{sec:evaluation}
 
 After optimizing each HCR, we simulated $n=500$ episodes and recorded the total utility received in each episode. 
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and fishing mortality. 
 To ease comparison between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1,\dots,1000}$ across all of the latter set of simulations.
+
+\begin{figure}[h!]
+	\includegraphics[width=.9\linewidth]{conceptual.png}
+\caption{
+\label{fig:conceptual}
+Conceptual setting for our work. \emph{a)} The interaction between the agent and the environment (the fish population) in our simulations. This interaction is explained in detail in Secs.~\ref{sec:popdyn},~\ref{sec:obs}. \emph{b)} We optimize and evaluate policies with respect to three complementary performance metrics, i.e. our work occurs in three ‘‘scenarios.’’ These performance metrics are described in Sec.~\ref{sec:utility}. \emph{c)} The different policy types used, described in Sec.~\ref{sec:strategies}.
+}
+\end{figure}
 
 %
 %
@@ -384,16 +401,47 @@ To ease comparison between policies, we used the same time-series of stochastic 
 \section{Results}
 
 We frame our results conceptually in Fig.~1.
-In Table 1 we show the parameter values obtained for the optimized fixed policies. The episode utilities obtained by these policies are displayed in Table 2 and Fig. 2. 
+In Table~\ref{tab:opt-vals} we show the parameter values obtained for the optimized fixed policies. 
+The distributions of episode utilities obtained by these policies are plotted in Fig.~\ref{fig:rewards}.
+Their summary statistics are recorded in Table~\ref{tab:utilities}. 
 With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for FMSY were within one standard deviation of its performance. 
-With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control. 
+With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control.\footnote{
+	It is counter-intuitive that the 2-observation RL policy performs worse than its 1-observation counterpart since the space of 2-observation policies contains the space of 1-observation policies. 
+	We address this point in the discussion section.
+}
 Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
 
+
 \begin{figure}[h!]
-	\includegraphics[width=.9\linewidth]{conceptual.png}
+	\includegraphics[width=1\linewidth]{rewards.png}
 \caption{
-\label{fig:conceptual}
-Conceptual setting for our work.
+\label{fig:rewards}
+Distribution of utility obtained by each policy for each of the three scenarios considered.
+These distributions were obtained by simulating 500 episodes for each policy and each scenario, and recording the episode utility obtained.
+}
+\end{figure}
+
+The HCRs are visualized in Fig.~\ref{fig:policies}, where we plot fishing mortality as a function of stock biomass. 
+We discuss these plots in the following paragraphs.
+
+\emph{Total harvest utility (left column).} 
+Here we see that the optimized precautionary policy and the 1-observation RL policy found a similar biomass threshold of about 0.5 below which no harvests are performed. 
+In the 2-observation RL policy this behavior is different (Fig.~\ref{fig:policies}, lower left): for populations with low mean weight the threshold depends on mean weight (see violet lines therein), whereas for populations with sufficiently high mean weight (green lines) the threshold vanishes.
+
+\emph{HARA utility (middle column).} 
+Here we see that none of the policies display a threshold below which fishing mortality is zero. 
+Moreover, we observe the similarity between the 1-observation RL policy and optimized precautionary policy, which are the highest performing policies for this utility (see Table~\ref{tab:utilities}). 
+It is also worth noting that the 1-observable policies obtained (top middle) contain a multitude of very distinct control rules which, however, all perform rather similarly to one another (Table~\ref{tab:utilities}).
+
+\emph{Trophy fishing utility (right column).} 
+Here, the 2-observable RL rule has, counter-intuitively, a high mortality at low stock biomasses, and low mortality at high stock biomasses. 
+This control has a very strong dependence on mean weight (Fig.~\ref{fig:policies}, bottom left). In contrast, 1-observable policies tended to have a very flat shape (Fig.~\ref{fig:policies} top left), with mortality values hovering around values of 0.5 - 1.5. Notice that this latter set of policies all have similar performances (Table~\ref{tab:utilities}, right column).
+
+\begin{figure}[h!]
+	\includegraphics[width=1\linewidth]{policies.png}
+\caption{
+\label{fig:policies}
+The policies obtained for each scenario.
 }
 \end{figure}
 
