@@ -52,6 +52,7 @@
 \def\obs{\text{obs}}
 
 \def\eg{e.g.}
+\def\ie{i.e.}
 
 
 %handy macros
@@ -189,7 +190,7 @@ A key finding of~\cite{cahill2022} was that recruitment dynamics were highly var
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(B_1, ... ,B_{20})$. 
 Recruitment is modeled via the Beverton-Holt equation,
 \begin{align*}
-    B_1(t+1) &= r_t \alpha \frac{\ssb_t}{1 + \beta \ssb_t} - H_{t,1},\\
+    B_1(t+1) &= \frac{r_t \alpha\ssb_t}{1 + \beta \ssb_t} - H_{t,1},\\
     B_a(t+1) &= s (B_{a-1}(t) - H_{t,a-1}), \quad \text{for } 2 \leq a < 20, \numberthis\\
     B_{20}(t+1) &= s (B_{20}(t) + B_{19}(t) - H_{t,19}).
 \end{align*}
