@@ -191,6 +191,7 @@ class AsmEnv(gym.Env):
             )
         #
         self.update_vuls()
+        self.update_ssb()
         obs = self.observe()
         return obs, {}
     
