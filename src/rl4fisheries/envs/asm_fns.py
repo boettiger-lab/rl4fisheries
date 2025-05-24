@@ -247,7 +247,8 @@ def get_r_devs_logn_unif(n_year, sdr=0.4, rho=0, p_big=0.025):
         log_n_mu = 0
         log_n_sd = sdr
         log_n_mean = np.exp(log_n_mu + 0.5 * log_n_sd**2)
-        scaling = 1 / (4 * log_n_mean)
+        # scaling = 1 / (4 * log_n_mean)
+        scaling = 1
         #
         #
         # sample from piecewise constant term (pdf(x) = y1 on [0, x1] and pdf(x)=y2 on [10, 30])
