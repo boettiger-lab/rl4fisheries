@@ -270,7 +270,7 @@ def get_r_devs(n_year, *args, **kwargs):
     # for back compatibility on places I haven't found yet that still use the old r_devs
     return get_r_devs_logn_unif(n_year, *args, **kwargs)
 
-def get_r_devs_v2(n_year, sdr=0.3, rho=0, **kwargs):
+def get_r_devs_v2(n_year, sdr=0.4, rho=0, **kwargs):
     """just lognormal
 
     n_year: number of years for output sequence of deviations
