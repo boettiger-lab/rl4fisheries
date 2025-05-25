@@ -5,7 +5,7 @@ from rl4fisheries.envs.asm_cr_like import AsmCRLike
 from rl4fisheries.envs.fs_asm_env import FrameStackedAsmEnv
 from rl4fisheries.envs.asm_anger import AsmAngerEnv, FrameStackedAngerAsmEnv
 from rl4fisheries.envs.asm_gas import AsmGas
-from rl4fisheries.envs.asm_mv_avg import AsmMovingAvg
+from rl4fisheries.envs.asm_mv_avg import AsmMovingAvg, AsmMovingBmsAvg
 
 from rl4fisheries.agents.cautionary_rule import PrecautionaryPrinciple
 from rl4fisheries.agents.const_esc import ConstantEscapement
@@ -44,6 +44,11 @@ register(
 register(
     id="AsmMovingAvg", 
     entry_point="rl4fisheries.envs.asm_mv_avg:AsmMovingAvg",
+)
+# moving biomass avg env
+register(
+    id="AsmMovingBmsAvg", 
+    entry_point="rl4fisheries.envs.asm_mv_avg:AsmMovingBmsAvg",
 )
 
 
