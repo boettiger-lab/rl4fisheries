@@ -6,7 +6,7 @@ parser.add_argument("-hf", "--do-huggingface-login", default=False, type=bool, h
 parser.add_argument("-vb", "--opt-verbose", default=False, type=bool, help="GP optimizer verbosity.")
 args = parser.parse_args()
 
-
+import gymnasium as gym
 import numpy as np
 import yaml
 
@@ -34,8 +34,11 @@ OPTIONS = {
     'n_calls': ...
     'id': ...
     'repo_id':
+    'env_id': [optional]
 }
 """
+
+ENV_ID = OPTIONS.get("env_id", "AsmEnv")
 
 #
 #
@@ -59,8 +62,10 @@ cr_space  = [
 
 @use_named_args(msy_space)
 def msy_fn(**params):
+    # this can't possibly be 'the way'
+    env_used = gym.make(ENV_ID, config=OPTIONS['config']).env.env
     agent = FMsy(
-        AsmEnv(config=OPTIONS['config']), 
+        env_used, 
         mortality=params['mortality'],
     )
     m_reward = evaluate_agent(agent=agent, ray_remote=True).evaluate(
@@ -70,8 +75,9 @@ def msy_fn(**params):
 
 @use_named_args(esc_space)
 def esc_fn(**params):
+    env_used = gym.make(ENV_ID, config=OPTIONS['config']).env.env
     agent = ConstantEscapement(
-        AsmEnv(config=OPTIONS['config']), 
+        env_used, 
         escapement=params['escapement'],
     )
     m_reward = evaluate_agent(agent=agent, ray_remote=True).evaluate(
@@ -86,8 +92,9 @@ def cr_fn(**params):
     x1 = np.sin(theta) * radius
     x2 = np.cos(theta) * radius
     #
+    env_used = gym.make(ENV_ID, config=OPTIONS['config']).env.env
     agent = PrecautionaryPrinciple(
-        AsmEnv(config=OPTIONS['config']), 
+        env_used, 
         x1 = x1, 
         x2 =  x2, 
         y2 = params["y2"],
@@ -143,39 +150,43 @@ print(
 #
 ### SAVE
 
-path = "../saved_agents/results/"
-msy_fname = f"msy-{OPTIONS['id']}.pkl"
-# esc_fname = f"esc-{OPTIONS['id']}.pkl"
-cr_fname = f"cr-{OPTIONS['id']}.pkl"
+if True:
 
-with open(path+msy_fname, "wb"):
-    dump(res=msy_results, filename=path+msy_fname, store_objective=False)
-
-# with open(path+esc_fname, "wb"):
-#     dump(res=esc_results, filename=path+esc_fname, store_objective=False)
-
-with open(path+cr_fname, "wb"):
-    dump(res=cr_results, filename=path+cr_fname, store_objective=False)
+    path = "../saved_agents/results/"
+    msy_fname = f"msy-{OPTIONS['id']}.pkl"
+    # esc_fname = f"esc-{OPTIONS['id']}.pkl"
+    cr_fname = f"cr-{OPTIONS['id']}.pkl"
+    
+    with open(path+msy_fname, "wb"):
+        dump(res=msy_results, filename=path+msy_fname, store_objective=False)
+    
+    # with open(path+esc_fname, "wb"):
+    #     dump(res=esc_results, filename=path+esc_fname, store_objective=False)
+    
+    with open(path+cr_fname, "wb"):
+        dump(res=cr_results, filename=path+cr_fname, store_objective=False)
 
 # HF
 
-api.upload_file(
-    path_or_fileobj=path+msy_fname,
-    path_in_repo="sb3/rl4fisheries/results/"+msy_fname,
-    repo_id=OPTIONS["repo_id"],
-    repo_type="model",
-)
-
-# api.upload_file(
-#     path_or_fileobj=path+esc_fname,
-#     path_in_repo="sb3/rl4fisheries/results/"+esc_fname,
-#     repo_id=OPTIONS["repo_id"],
-#     repo_type="model",
-# )
-
-api.upload_file(
-    path_or_fileobj=path+cr_fname,
-    path_in_repo="sb3/rl4fisheries/results/"+cr_fname,
-    repo_id=OPTIONS["repo_id"],
-    repo_type="model",
-)
+if True:
+    
+    api.upload_file(
+        path_or_fileobj=path+msy_fname,
+        path_in_repo="sb3/rl4fisheries/post-review-results/"+msy_fname,
+        repo_id=OPTIONS["repo_id"],
+        repo_type="model",
+    )
+    
+    # api.upload_file(
+    #     path_or_fileobj=path+esc_fname,
+    #     path_in_repo="sb3/rl4fisheries/results/"+esc_fname,
+    #     repo_id=OPTIONS["repo_id"],
+    #     repo_type="model",
+    # )
+    
+    api.upload_file(
+        path_or_fileobj=path+cr_fname,
+        path_in_repo="sb3/rl4fisheries/post-review-results/"+cr_fname,
+        repo_id=OPTIONS["repo_id"],
+        repo_type="model",
+    )

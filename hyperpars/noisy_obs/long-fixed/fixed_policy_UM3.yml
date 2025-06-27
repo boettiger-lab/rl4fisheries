@@ -1,0 +1,10 @@
+config:
+    upow: 1
+    harvest_fn_name: "trophy"
+    n_trophy_ages: 10
+    obs_noise: 0.1
+n_eval_episodes: 450
+n_calls: 70
+# ^70
+id: "UM3-noise01"
+repo_id: "boettiger-lab/rl4eco"

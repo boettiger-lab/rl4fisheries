@@ -159,6 +159,11 @@ def sb3_train_save_checkpoints(config_file, checkpoint_freq=500_000, checkpoint_
 
     progress_bar = options.get("progress_bar", False)
 
+    if 'checkpoint_start' in options:
+        checkpoint_start = options['checkpoint_start']
+    if 'checkpoint_freq' in options:
+        checkpoint_freq = options['checkpoint_freq']
+
     #
     ## TRAINING
     model.learn(
