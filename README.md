@@ -1,71 +1,81 @@
 # rl4fisheries
 
-RL and Bayesian optimization methodologies for harvest control rule optimization in fisheries.
-Includes:
-- A gymnasium environment for a Walleye population dynamics model
-- Policy functions for different commonly-tested policies (including those in the paper)
-- Scripts to optimize RL policies and non-RL policies
-- Notebooks to reproduce paper figures
-- Templates to train new RL policies on our Walleye environment
+Open code to reproduce and extend the paper 
+
+**Using machine learning to inform harvest control rule design in complex fishery settings**
+Montealegre-Mora, Boettiger, Walters, Cahill.
+
+We provide reinforcement learning (RL) and Bayesian optimization methodologies to optimize harvest control rules in several scenarios for a Walleye (*Sander vitreus*) population dynamics model.
+
+## Quickstart: Reproducing paper figures
+
+We provide notebooks to reproduce the figures in the paper in the folder `notebooks/for_results/`.
+- These figures are generated with csv data that is stored in this [link](https://huggingface.co/boettiger-lab/rl4eco/tree/main/rl4fisheries-reproducing).
+- First step for reproducing results here is a script `setup.sh` which sets the python environment that the notebooks need in order to generate the figures.
+- Notebook `2-download-data.ipynb` downloads the data locally to the user's computer. 
+- Subsequent notebooks use that downloaded data to generate figures.
 
 ## Installation
 
 To install this source code, you need to have git, Python and pip installed.
-To quickly check whether these are installed you can open the terminal and run the following commands:
-```bash
-git version
-pip --version
-python -V
-```
-If the commands are not recognized by the terminal, refer to
-[here](https://github.com/git-guides/install-git)
-for git installation instructions,
-[here](https://realpython.com/installing-python/) 
-for Python installation instructions and/or
-[here](https://pip.pypa.io/en/stable/installation/)
-for pip installation instructions.
+To quickly check whether these are installed you can open the terminal and run the following command:
 
-To install this source code, run
 ```bash
-git clone https://github.com/boettiger-lab/rl4fisheries.git
-cd rl4fisheries
-pip install -e .
+pip install git+https://github.com/boettiger-lab/rl4fisheries.git
 ```
 
 ## Optimized policies
 
-The optimized policies presented in the paper---both RL policies and non-RL policies such as the precautionary policy---are saved in a public hugging-face 
-[repository](https://huggingface.co/boettiger-lab/rl4eco/tree/main/sb3/rl4fisheries/results).
-RL policies are saved as zip files named ```PPO-AsmEnv-(...)-UMx-(...).zip``` since the RL algorithm PPO was used to optimize them.
-Here *UM* stands for *utility model* and `x=1, 2, or 3` designates which utility model the policy was optimized for.
-Precautionary policies are named `cr-UMx.pkl` (CR stands for "cautionary rule", an acronym we used during the research phase of this collaboration).
-Similarly, constant escapement policies are saved as `esc-UMx.pkl` and FMSY policies are saved as `msy-UMx.pkl`.
+The optimized policies presented in the paper are saved at this [link](https://huggingface.co/boettiger-lab/rl4eco/tree/main/sb3/rl4fisheries/post-review-results/) which is a public repository hosted by [Hugging Face](https://huggingface.co).
+That link contains a variety of policies which we trained using different algorithms, neural network architectures and fishery scenarios.
+The policies used in our paper may be found on [this notebook](https://github.com/boettiger-lab/rl4fisheries/blob/new-fig/notebooks/for_generating_results/2_reward_distr.ipynb), on cells 4 and 6:
+- `cr-UM{1,2,3}-noise01.pkl` --> optimized precautionary policies
+- `msy-UM{1,2,3}-noise01.pkl` --> constant finite exploitation rate ('const-U') policies
+- `2obs-UM1-256-64-16-noise0.1-chkpnt2.zip` --> 2-observation RL policy for UM1
+- `biomass-UM1-64-32-16-noise0.1-chkpnt2.zip` --> 1-observation RL policy for UM1
+- `2obs-UM2-256-64-16-noise0.1-chkpnt4.zip` --> 2-observation RL policy for UM2
+- `biomass-UM2-64-32-16-noise0.1-chkpnt4.zip` --> 1-observation RL policy for UM2
+- `2obs-UM3-256-64-16-noise0.1-chkpnt2.zip` --> 2-observation RL policy for UM3
+- `biomass-UM3-64-32-16-noise0.1-chkpnt4.zip` --> 1-observation RL policy for UM3
 
-## Reproducing paper figures
+Above, we use the notation UM{1,2,3} to mean the three utility models examined in the paper: UM1 = harvest utility, UM2 = HARA utility, UM3 = trophy utility.
 
-The Jupyter notebooks found at `rl4fisheries/notebooks/for_results` may be used to re-generate the csv data used in our figures.
-Notice that the data for the plots is re-generated each time the notebook is run so, e.g., the time-series plots will look different due to stochasticity.
+## Optimizing policies
 
-The specific data used to generate the figures in our paper, along with the Jupyter notebooks to construct the figures and make them look pretty, can be found in this huggingface repo:
+Here we explain how to use our code to optimize policies as done in our paper.
 
-```https://huggingface.co/datasets/felimomo/rl4fisheries-public-data```
+### Train all RL/non-RL policies in all scenarios considered in paper
 
-## Optimizing RL policies
+To train both RL policies in the 3 utility model scenarios considered in the paper, you can use the following command:
+``` bash
+bash scripts/train_RL_algos.sh
+```
+
+Similarly, to train all non-RL policies ('fixed policies' in the paper) in the 3 scenarios, run 
+``` bash
+bash scripts/tune_fixed_policies.sh
+```
+
+### Optimize policies in customized scenarios
 
 To optimize an RL policy from scratch, use the command
 ```bash
 python scripts/train.py -f path/to/config/file.yml
 ```
-You can use the following template config file:
+You can use the template config file `hyperpars/RL-template.yml` file to begin:
 ```bash
 python scripts/train.py -f hyperpars/RL-template.yml
 ```
+For reference, the config files used for our paper's results are located at `hyperpars/for_results`.
 
-The config files we used for the policies in our paper are found at `hyperpars/for_results/`.
-For example 
-[this](https://github.com/boettiger-lab/rl4fisheries/blob/main/hyperpars/for_results/ppo_biomass_UM1.yml) 
-config file was used to train 1-Obs. RL in Scenario 1 (utility = total harvest).
-The trained model is automatically pushed to hugging-face if a hugging-face token is provided. 
+Similarly, you can optimize fixed policies using
+``` bash
+python scripts/tune.py -f path/to/config/file.yml,
+```
+e.g. 
+``` bash
+python scripts/tune.py -f hyperpars/for_results/fixed_policy_UM1.yml,
+```
 
 ## Source code structure
 
@@ -74,30 +84,30 @@ rl4fisheries
 |
 |-- hyperpars
 |   |
-|   |-- configuration yaml files
+|   |-- configuration yaml files used by optimizing scripts
 |
 |-- notebooks
 |   |
-|   |-- Jupyter notebooks
+|   |-- Jupyter notebooks to reproduce results
 |
 |-- src/rl4fisheries
 |   |
 |   |-- agents
 |   |   |
-|   |   |-- interfaces for policies such as Precautionary Policy, FMSY, Constant Escapement
+|   |   |-- interfaces for policies such as Precautionary Policy, UMSY, Constant Escapement
 |   |
 |   |-- envs
 |   |   |
-|   |   |-- Gymnasium environments used in our study.
+|   |   |-- Gymnasium environments used to model Walleye population dynamics in our study.
 |   |       (specifically, asm_env.py is used for our paper).
 |   |
 |   |-- utils
 |       |
-|       |-- ray.py: RL training within Ray framework (not used in paper)
+|       |-- ray.py: RL training within Ray framework (not used in paper, potentially not working)
 |       |
 |       |-- sb3.py: RL training within Stable Baselines framework (used in paper)
 |       |
-|       |-- simulation.py: helper functions to simulate the system dynamics using a policy
+|       |-- simulation.py: helper functions to simulate the system dynamics using a policy (used to generate policy evaluations)
 |    
 |-- tests
 |   |
