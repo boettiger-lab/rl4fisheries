@@ -26,6 +26,7 @@ env_id: "AsmEnv"
 config: 
     observation_fn_id: 'observe_1o'
     n_observs: 1
+    obs_noise: 0.1
     #
     harvest_fn_name: "default"
     upow: 0.6
@@ -36,6 +37,6 @@ repo: "cboettig/rl-ecology"
 save_path: "../saved_agents/results/"
 
 # misc
-id: "biomass-UM2-64-32-16"
+id: "biomass-UM2-64-32-16-noise0.1"
 # id: "short-test"
 additional_imports: ["torch"]

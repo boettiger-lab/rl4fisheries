@@ -1,3 +1,5 @@
+id: "2obs-UM3-256-64-16-noise0.1"
+
 # algo 
 algo: "PPO"
 total_timesteps: 6000000
@@ -6,7 +8,7 @@ algo_config:
     #
     policy: 'MlpPolicy'
     # learning_rate: 0.00015
-    policy_kwargs: "dict(net_arch=[64, 32, 16])"
+    policy_kwargs: "dict(net_arch=[256, 64, 16])"
     #
     # batch_size: 512
     # gamma: 0.9999
@@ -28,7 +30,7 @@ config:
     n_observs: 2
     obs_noise: 0.1
     #
-    harvest_fn_name: "default"
+    harvest_fn_name: "trophy"
     upow: 1
 n_envs: 12
 
@@ -37,6 +39,4 @@ repo: "cboettig/rl-ecology"
 save_path: "../saved_agents/results/"
 
 # misc
-id: "2obs-UM1-64-32-16-noise0.1"
-# id: "short-test"
 additional_imports: ["torch"]
