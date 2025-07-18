@@ -15,6 +15,12 @@ We provide notebooks to reproduce the figures in the paper in the folder `notebo
 - Notebook `2-download-data.ipynb` downloads the data locally to the user's computer. 
 - Subsequent notebooks use that downloaded data to generate figures.
 
+### Generating new figures
+
+We generated our results data (the csv data used above) using the notebooks at `notebooks/for_generating_results/`.
+These notebooks use optimized policies saved [here](https://huggingface.co/boettiger-lab/rl4eco/tree/main/sb3/rl4fisheries/post-review-results/) to generate the simulations and evaluations of the policies examined in the paper.
+Notice that, because the system is stochastic, the new data will not exactly correspond to the data used in the previous subsection.
+
 ## Installation
 
 To install this source code, you need to have git, Python and pip installed.
