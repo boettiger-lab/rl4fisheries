@@ -1,5 +1,9 @@
+import os
+from pathlib import Path
+
 import numpy as np
 import ray
+
 
 class evaluate_agent:
     def __init__(self, *, agent, env=None, ray_remote=False):
@@ -7,18 +11,18 @@ class evaluate_agent:
         self.env = env or agent.env
         self.simulator = get_simulator(ray_remote=ray_remote)
         self.ray_remote = ray_remote
-    
+
     def evaluate(self, return_episode_rewards=False, n_eval_episodes=50):
         if self.ray_remote:
             rewards = ray.get([
-                self.simulator.remote(env=self.env, agent=self.agent) 
+                self.simulator.remote(env=self.env, agent=self.agent)
                 for _ in range(n_eval_episodes)
             ])
             if ray.is_initialized():
                 ray.shutdown()
         else:
             rewards = [
-                self.simulator(env=self.env, agent=self.agent) 
+                self.simulator(env=self.env, agent=self.agent)
                 for _ in range(n_eval_episodes)
             ]
         #
@@ -26,12 +30,22 @@ class evaluate_agent:
             return rewards
         else:
             return np.mean(rewards)
-        
-    
+
+
 
 def get_simulator(ray_remote = False):
     if ray_remote:
-        ray.init(logging_level='error')
+        project_root = Path(__file__).resolve().parent.parent
+        os.environ.setdefault("UV_PROJECT_ROOT", str(project_root))
+        ray.init(
+            logging_level='error',
+            runtime_env={
+                "working_dir": str(project_root),
+                "env_vars": {
+                    "UV_PROJECT_ROOT": str(project_root),
+                },
+            }
+        )
         @ray.remote
         def simulator(env, agent):
             results = []
@@ -76,5 +90,5 @@ class simulator_old:
                 episode_reward += reward
                 if terminated or done:
                     break
-            results.append(episode_reward)      
+            results.append(episode_reward)
         return results

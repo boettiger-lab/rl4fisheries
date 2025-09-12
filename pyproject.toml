@@ -1,17 +1,33 @@
 [project]
 name = "rl4fisheries"
 version = "1.0.0"
+requires-python = ">=3.12,<3.13"
 
-dependencies = ["gymnasium",
-                "numpy",
-                "matplotlib",
-                "typing",
-                "polars",
-                "tqdm",
-                "scikit-optimize",
-                "scikit-learn==1.4.2",
-                ]
+dependencies = [
+    "gymnasium",
+    "jupyter",
+    "numpy",
+    "matplotlib",
+    "typing",
+    "polars",
+    "seaborn",
+    "tqdm",
+    "scikit-optimize",
+    "scikit-learn==1.4.2",
+]
 
-[project.optional-dependencies]
-tests = ["pytest", "pytest-cov", "stable_baselines3",  "sb3-contrib", "ray"]
-docs = ["ibis-framework", "stable_baselines3", "sb3-contrib", "plotnine", "huggingface_hub"]
+[dependency-groups]
+tests = ["pytest", "pytest-cov", "stable_baselines3", "sb3-contrib", "ray"]
+dev = [
+    "ibis-framework",
+    "stable_baselines3",
+    "sb3-contrib",
+    "plotnine",
+    "huggingface_hub",
+    "ray",
+    "tensorboard",
+]
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]

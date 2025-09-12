@@ -1,0 +1,166 @@
+name: rl4fisheries
+title: Using machine learning to inform harvest control rule design in
+  complex fishery settings
+description:
+dependencies:
+  - uv
+environments:
+  main:
+    kind: uv
+    path: pyproject.toml
+  for-results:
+    path: notebooks/for_results/requirements.txt
+    kind: uv-venv
+    python: "3.13.3"
+    prefix: .venv-for-results
+pipeline:
+  stages:
+    trail-rl-algos:
+      kind: shell-script
+      script_path: scripts/train_rl_algos.sh
+      environment: main
+      inputs:
+        - src
+        - hyperpars/for_results/ppo_both_UM1.yml
+        - hyperpars/for_results/ppo_both_UM1_deep.yml
+        - hyperpars/for_results/ppo_biomass_UM1.yml
+        - hyperpars/for_results/ppo_both_UM2.yml
+        - hyperpars/for_results/ppo_both_UM2_deep.yml
+        - hyperpars/for_results/ppo_biomass_UM2.yml
+        - hyperpars/for_results/ppo_both_UM3.yml
+        - hyperpars/for_results/ppo_both_UM3_deep.yml
+        - hyperpars/for_results/ppo_biomass_UM3.yml
+      outputs:
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-256-64-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-256-64-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-256-64-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-256-64-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM1-64-32-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-256-64-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-256-64-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-256-64-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-256-64-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM2-64-32-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-256-64-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-256-64-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-256-64-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-256-64-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-2obs-UM3-64-32-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM1-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM1-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM1-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM1-64-32-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM2-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM2-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM2-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM2-64-32-16-noise0.1-chkpnt4.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM3-64-32-16-noise0.1-chkpnt1.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM3-64-32-16-noise0.1-chkpnt2.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM3-64-32-16-noise0.1-chkpnt3.zip
+        - saved_agents/results/PPO-AsmEnv-biomass-UM3-64-32-16-noise0.1-chkpnt4.zip
+    tune-fixed-policies:
+      kind: shell-script
+      script_path: scripts/tune_fixed_policies.sh
+      environment: main
+      inputs:
+        - src
+        - hyperpars/for_results/fixed_policy_UM1.yml
+        - hyperpars/for_results/fixed_policy_UM2.yml
+        - hyperpars/for_results/fixed_policy_UM3.yml
+      outputs:
+        - saved_agents/results/cr-UM1-noise01.pkl
+        - saved_agents/results/msy-UM1-noise01.pkl
+    tests:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/0_tests.ipynb
+      environment: main
+      inputs:
+        - src
+    fp-skopt:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/1_fp_skopt.ipynb
+      environment: main
+      outputs:
+        - path: notebooks/for_generating_results/csv/opt-params.csv
+          storage: git
+    reward-distr:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/2_reward_distr.ipynb
+      environment: main
+      inputs:
+        - src
+      outputs:
+        - notebooks/for_generating_results/csv/UM1_rew.csv
+        - notebooks/for_generating_results/csv/UM2_rew.csv
+        - notebooks/for_generating_results/csv/UM3_rew.csv
+    policy-plots:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/3_policy_plots.ipynb
+      environment: main
+      inputs:
+        - src
+      outputs:
+        - notebooks/for_generating_results/csv/UM1_policies.csv
+        - notebooks/for_generating_results/csv/UM2_policies.csv
+        - notebooks/for_generating_results/csv/UM3_policies.csv
+    episode-plots:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/4_episode_plots.ipynb
+      environment: main
+      inputs:
+        - src
+      outputs:
+        - notebooks/for_generating_results/csv/eps-v2
+    stochasticity:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/5_stochasticity.ipynb
+      environment: main
+      inputs:
+        - src
+    aftermath:
+      kind: jupyter-notebook
+      notebook_path: notebooks/for_generating_results/6_aftermath.ipynb
+      environment: main
+      inputs:
+        - src
+      outputs:
+        - peer-review/myst/figures/aftermath-full.jpeg
+    download-data:
+      kind: jupyter-notebook
+      environment: for-results
+      notebook_path: notebooks/for_results/2-download-data.ipynb
+      outputs:
+        - path: notebooks/for_results/data/rl4fisheries-reproducing
+          storage: null
+    rewards:
+      kind: jupyter-notebook
+      environment: for-results
+      notebook_path: notebooks/for_results/3-rewards.ipynb
+      outputs:
+        - notebooks/for_results/figures/rewards.jpeg
+        - path: notebooks/for_results/csv/rew-table.csv
+          storage: git
+    policies:
+      kind: jupyter-notebook
+      environment: for-results
+      notebook_path: notebooks/for_results/4-policies.ipynb
+      outputs:
+        - notebooks/for_results/figures/policies.jpeg
+    episodes:
+      kind: jupyter-notebook
+      environment: for-results
+      notebook_path: notebooks/for_results/5-episodes.ipynb
+      outputs:
+        - notebooks/for_results/figures/eps-um1.jpeg
+        - notebooks/for_results/figures/eps-um2.jpeg
+        - notebooks/for_results/figures/eps-um3.jpeg
+        - notebooks/for_results/figures/eps-um3-zoom.jpeg

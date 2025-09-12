@@ -60,7 +60,7 @@ cr_space  = [
 @use_named_args(msy_space)
 def msy_fn(**params):
     agent = FMsy(
-        AsmEnv(config=OPTIONS['config']), 
+        AsmEnv(config=OPTIONS['config']),
         mortality=params['mortality'],
     )
     m_reward = evaluate_agent(agent=agent, ray_remote=True).evaluate(
@@ -71,7 +71,7 @@ def msy_fn(**params):
 @use_named_args(esc_space)
 def esc_fn(**params):
     agent = ConstantEscapement(
-        AsmEnv(config=OPTIONS['config']), 
+        AsmEnv(config=OPTIONS['config']),
         escapement=params['escapement'],
     )
     m_reward = evaluate_agent(agent=agent, ray_remote=True).evaluate(
@@ -87,9 +87,9 @@ def cr_fn(**params):
     x2 = np.cos(theta) * radius
     #
     agent = PrecautionaryPrinciple(
-        AsmEnv(config=OPTIONS['config']), 
-        x1 = x1, 
-        x2 =  x2, 
+        AsmEnv(config=OPTIONS['config']),
+        x1 = x1,
+        x2 =  x2,
         y2 = params["y2"],
     )
     m_reward = evaluate_agent(agent=agent, ray_remote=True).evaluate(
@@ -159,12 +159,15 @@ with open(path+cr_fname, "wb"):
 
 # HF
 
-api.upload_file(
-    path_or_fileobj=path+msy_fname,
-    path_in_repo="sb3/rl4fisheries/results/"+msy_fname,
-    repo_id=OPTIONS["repo_id"],
-    repo_type="model",
-)
+try:
+    api.upload_file(
+        path_or_fileobj=path+msy_fname,
+        path_in_repo="sb3/rl4fisheries/results/"+msy_fname,
+        repo_id=OPTIONS["repo_id"],
+        repo_type="model",
+    )
+except Exception as e:
+    print(f"Failed to upload to HF: {e}")
 
 # api.upload_file(
 #     path_or_fileobj=path+esc_fname,
@@ -173,9 +176,12 @@ api.upload_file(
 #     repo_type="model",
 # )
 
-api.upload_file(
-    path_or_fileobj=path+cr_fname,
-    path_in_repo="sb3/rl4fisheries/results/"+cr_fname,
-    repo_id=OPTIONS["repo_id"],
-    repo_type="model",
-)
+try:
+    api.upload_file(
+        path_or_fileobj=path+cr_fname,
+        path_in_repo="sb3/rl4fisheries/results/"+cr_fname,
+        repo_id=OPTIONS["repo_id"],
+        repo_type="model",
+    )
+except Exception as e:
+    print(f"Failed to upload to HF: {e}")
