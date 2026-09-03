@@ -21,5 +21,6 @@ COPY . .
 RUN pip install .
 
 # ---- Entrypoint ----
+RUN chmod +x /welcome.sh
 ENTRYPOINT ["welcome.sh"]
 CMD ["scripts/trian_rl_algos.sh"]
