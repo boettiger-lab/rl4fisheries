@@ -7,6 +7,13 @@ Montealegre-Mora, Boettiger, Walters, Cahill.
 
 We provide reinforcement learning (RL) and Bayesian optimization methodologies to optimize harvest control rules in several scenarios for a Walleye (*Sander vitreus*) population dynamics model.
 
+## Running main script on container
+
+If you have Docker available, run
+```
+docker run
+```
+
 ## Quickstart: Reproducing paper figures
 
 We provide notebooks to reproduce the figures in the paper in the folder `notebooks/for_results/`.
