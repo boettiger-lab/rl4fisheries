@@ -1,7 +1,7 @@
 # ---- Base image ----
 FROM pytorch/pytorch:2.x-cuda12.x-cudnn8-runtime AS base
 
-# Avoid .pyc files, buffer stdout/stderr immediately (useful for training logs)
+# Avoid .pyc files, buffer stdout/stderr immediately
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_NO_CACHE_DIR=1
