@@ -29,4 +29,4 @@ jobs:
 
       - name: Run container (smoke test)
         run: |
-          docker run --rm rl4fisheries:latest python -m scripts/train.py -f hyperpars/testing/train_test.yml
+          docker run --rm rl4fisheries:latest python -m scripts/train -f hyperpars/testing/train_test.yml
