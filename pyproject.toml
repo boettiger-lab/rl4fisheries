@@ -12,6 +12,7 @@ dependencies = ["gymnasium",
                 "scikit-learn==1.4.2",
                 "stable-baselines3",
                 "sb3-contrib",
+                "ray",
                 ]
 
 [project.optional-dependencies]
