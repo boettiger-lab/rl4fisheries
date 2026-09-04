@@ -13,6 +13,15 @@ from rl4fisheries.agents.const_act import ConstantAction
 
 from gymnasium.envs.registration import register
 # action is fishing intensity
+
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    __version__ = version("rl4fisheries")
+except PackageNotFoundError:
+    __version__ = "unknown"
+
+
 register(id="AsmEnv", entry_point="rl4fisheries.envs.asm_env:AsmEnv")
 # action is 'escapement'
 register(id="AsmEnvEsc", entry_point="rl4fisheries.envs.asm_esc:AsmEnvEsc")

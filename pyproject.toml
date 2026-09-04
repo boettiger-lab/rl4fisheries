@@ -10,6 +10,12 @@ dependencies = ["gymnasium",
                 "tqdm",
                 "scikit-optimize",
                 "scikit-learn==1.4.2",
+                "stable-baselines3",
+                "sb3-contrib",
+                "ray",
+                "huggingface_hub",
+                "PyYAML",
+                "tensorboard",
                 ]
 
 [project.optional-dependencies]

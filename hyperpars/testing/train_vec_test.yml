@@ -1,0 +1,27 @@
+# algo 
+algo: "PPO"
+total_timesteps: 10000
+algo_config:
+    tensorboard_log: "../../../logs"
+    #
+    policy: 'MlpPolicy'
+    use_sde: True
+
+# env
+env_id: "AsmEnv"
+config: 
+    observation_fn_id: 'observe_2o'
+    n_observs: 2
+    obs_noise: 0.1
+    #
+    harvest_fn_name: "default"
+    upow: 1
+n_envs: 4
+
+# io
+repo: "cboettig/rl-ecology"
+save_path: "../saved_agents/test-runs/"
+
+# misc
+id: "test-run"
+# additional_imports: ["torch"]
