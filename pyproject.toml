@@ -10,6 +10,8 @@ dependencies = ["gymnasium",
                 "tqdm",
                 "scikit-optimize",
                 "scikit-learn==1.4.2",
+                "stable-baselines3",
+                "sb3-contrib",
                 ]
 
 [project.optional-dependencies]
