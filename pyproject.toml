@@ -15,6 +15,7 @@ dependencies = ["gymnasium",
                 "ray",
                 "huggingface_hub",
                 "PyYAML",
+                "tensorboard",
                 ]
 
 [project.optional-dependencies]
